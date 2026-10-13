@@ -1733,7 +1733,7 @@
             alert("Овај прегледач не подржава директно дељење слике. Користи дугмад за преузимање слике и копирање текста.");
             return;
           }
-          await navigator.share({ files: [file], title: "Радионица", text: workshopShareText, url: workshopShareUrl });
+          await navigator.share({ files: [file], title: "Радионица", text: workshopShareText.replace(/\n*Више информација и пријава:\nhttps?:\/\/\S+/i, "").trim() });
         } catch (err) {
           if (err && err.name !== "AbortError") alert("Директно дељење није успело. Преузми слику и копирај текст као резервну опцију.");
         }
