@@ -1769,7 +1769,7 @@
           alert("Постер је направљен, али није сачуван за Facebook. Провери да ли си пријављен као администратор и да ли је у Netlify-у подешен SUPABASE_SERVICE_ROLE_KEY.");
         }
         workshopShareFileName = (String(event.title || "radionica").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "radionica") + ".png";
-        workshopShareText = [event.title, "", event.description || "Практична радионица за учење, развој и нове идеје.", "", "📅 " + (fmtDate(event.date) || "Термин у најави") + (event.time ? " у " + event.time : ""), "📍 " + (event.location || "Локација ће бити накнадно објављена"), "💳 Цена: " + Number(event.price || 0).toLocaleString("sr-RS") + " РСД", "", "Више информација и пријава:", workshopShareUrl].join("\n");
+        workshopShareText = [event.title, "", event.description || "Практична радионица за учење, развој и нове идеје.", "", "📅 " + (fmtDate(event.date) || "Термин у најави") + (event.time ? " у " + event.time : ""), "📍 " + (event.location || "Локација ће бити накнадно објављена"), "💳 Цена: " + Number(event.price || 0).toLocaleString("sr-RS") + " РСД", "", "📞 Информације и пријаве: 064/418-8987", "Слободно нас позовите ако желите додатне информације о радионици и начину пријаве.", "", "🔗 Пријава на радионицу:", workshopShareUrl].join("\n");
       } catch (err) {
         console.error(err);
         alert("Нисмо успели да припремимо слику за ову радионицу. Провери да ли радионица има исправну фотографију и покушај поново.");
