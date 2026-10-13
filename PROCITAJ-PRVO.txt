@@ -1,0 +1,15 @@
+AUTOMATSKI FACEBOOK PREGLED ZA SVAKU RADIONICU
+
+Ovaj paket menja link koji dugme „Подели радионицу“ kopira. Link vodi na Netlify Function koja čita izabranu radionicu iz Supabase baze i vraća Facebook/Open Graph naslov, opis i fotografiju. Posetioci se zatim automatski preusmeravaju na radionicu na sajtu.
+
+VAŽNO: OVAJ PAKET SE NE MOŽE AKTIVIRATI SAMO PREVLAČENJEM ZIP-A U NETLIFY DROP.
+Netlify Functions zahtevaju deploy preko Git repozitorijuma ili Netlify CLI/build sistema. Nemojte ga prevući u postojeći „Already built it?“ okvir očekujući da funkcije rade — taj postupak je dovoljan za statičke fajlove, ali ne i za ove serverske funkcije.
+
+U paketu su:
+- index.html — postojeći sajt sa ažuriranim linkom za deljenje i sačuvanim CTA slikom
+- og-cover.png — postojeća општа naslovna slika
+- netlify.toml — podešavanje Netlify build-a
+- netlify/functions/workshop-share.mjs — dinamički OG naslov/opis za izabranu radionicu
+- netlify/functions/workshop-image.mjs — javno dostavlja fotografiju iz baze za Facebook crawler
+
+Kada se funkcije objave, dugme „Копирај текст и линк“ koristiće adresu /.netlify/functions/workshop-share?id=ID. Link mora biti ponovo proverен u Meta Sharing Debuggeru posle objavljivanja.

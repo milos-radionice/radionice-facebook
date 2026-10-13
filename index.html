@@ -1,0 +1,2029 @@
+<!DOCTYPE html>
+<html lang="sr-Cyrl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Отварамо прозоре — радионице и тематски садржаји</title>
+  <meta name="description" content="Отварамо прозоре — радионице за децу, родитеље и одрасле. Простор за учење, стварање и лични развој.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="sr_RS">
+  <meta property="og:site_name" content="Отварамо прозоре">
+  <meta property="og:title" content="Отварамо прозоре — радионице и тематски садржаји">
+  <meta property="og:description" content="Радионице за децу, родитеље и одрасле — простор за учење, стварање и лични развој.">
+  <meta property="og:url" content="https://licni-razvoj.netlify.app/">
+  <meta property="og:image" content="https://licni-razvoj.netlify.app/og-cover.png">
+  <meta property="og:image:secure_url" content="https://licni-razvoj.netlify.app/og-cover.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Отварамо прозоре — радионице и тематски садржаји">
+  <meta name="twitter:description" content="Радионице за децу, родитеље и одрасле — простор за учење, стварање и лични развој.">
+  <meta name="twitter:image" content="https://licni-razvoj.netlify.app/og-cover.png">
+  <style>
+    :root {
+      --green: #24584d;
+      --green2: #347565;
+      --orange: #c77b55;
+      --cream: #f7f4ed;
+      --ink: #243630;
+      --muted: #687872;
+      --line: #e3e5dc;
+      --white: #fff;
+      --sage: #e3ece4;
+      --sand: #f1e7d6
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif
+    }
+
+    header {
+      background: var(--green);
+      color: white;
+      padding: 28px 18px 24px
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 18px
+    }
+
+    .brand {
+      font-size: 12px;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+      opacity: .85
+    }
+
+    .hero {
+      display: flex;
+      gap: 24px;
+      justify-content: space-between;
+      align-items: end;
+      flex-wrap: wrap
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.1;
+      margin: 10px 0
+    }
+
+    .hero p {
+      margin: 0;
+      color: #e4efea;
+      max-width: 620px
+    }
+
+    .tag {
+      border: 1px solid #9ab7ad;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px
+    }
+
+    main {
+      padding: 24px 0 56px
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 20px;
+      margin: 0 0 28px;
+      align-items: stretch
+    }
+
+    .daily-card {
+      background: #f0e7d7;
+      border-radius: 20px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 245px
+    }
+
+    .daily-copy {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center
+    }
+
+    .daily-copy .eyebrow,
+    .post-kind {
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--green2);
+      font-weight: 800
+    }
+
+    .daily-copy h2 {
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.12;
+      margin: 8px 0
+    }
+
+    .daily-copy p {
+      margin: 0 0 16px
+    }
+
+    .daily-art {
+      width: 100%;
+      height: 100%;
+      min-height: 245px;
+      object-fit: cover;
+      background: #dce8df
+    }
+
+    .quick-links {
+      display: grid;
+      gap: 12px
+    }
+
+    .quick-link {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      gap: 12px;
+      align-items: center
+    }
+
+    .quick-link .symbol {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #e9f0e8;
+      display: grid;
+      place-items: center;
+      font-size: 23px;
+      flex-shrink: 0
+    }
+
+    .quick-link h3 {
+      margin: 0 0 3px;
+      font-size: 17px
+    }
+
+    .quick-link p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 30px 0 14px
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 24px
+    }
+
+    .section-heading p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px
+    }
+
+    .post-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px
+    }
+
+    .post-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden
+    }
+
+    .post-photo {
+      width: 100%;
+      height: 165px;
+      object-fit: cover;
+      display: block;
+      background: #e8eee9
+    }
+
+    .post-body {
+      padding: 17px
+    }
+
+    .post-body h3 {
+      font-size: 19px;
+      line-height: 1.25;
+      margin: 7px 0
+    }
+
+    .post-body p {
+      font-size: 14px;
+      margin: 0 0 12px;
+      white-space: pre-line
+    }
+
+    .post-date {
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .post-admin {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 12px
+    }
+
+    .post-admin button {
+      font-size: 12px;
+      padding: 7px 9px
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 18px
+    }
+
+    .toolbar h2 {
+      margin: 0;
+      font-size: 24px
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    button,
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      background: var(--green);
+      color: white;
+      padding: 11px 15px;
+      font: inherit;
+      font-weight: 650;
+      cursor: pointer
+    }
+
+    button:hover,
+    .btn:hover {
+      background: var(--green2)
+    }
+
+    button.secondary {
+      background: white;
+      color: var(--green);
+      border: 1px solid var(--line)
+    }
+
+    button.danger {
+      background: #9d3e3e
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 14px 0 20px
+    }
+
+    .filters button {
+      background: white;
+      color: var(--green);
+      border: 1px solid var(--line);
+      padding: 8px 12px
+    }
+
+    .filters button.active {
+      background: var(--green);
+      color: white
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 3px 14px #1c40300b
+    }
+
+    .card-top {
+      height: 8px;
+      background: var(--orange)
+    }
+
+    .event-photo {
+      display: block;
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #e8eee9
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 12px
+    }
+
+    .admin-actions button {
+      padding: 7px 10px;
+      font-size: 13px
+    }
+
+    .topic-dialog {
+      max-width: 760px
+    }
+
+    .topic-content {
+      white-space: pre-line;
+      line-height: 1.8;
+      margin: 16px 0
+    }
+
+    .topic-facts {
+      background: var(--sage);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 14px;
+      line-height: 1.8
+    }
+
+    .preview {
+      max-width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-top: 8px
+    }
+
+    .card-body {
+      padding: 18px
+    }
+
+    .category {
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--green2)
+    }
+
+    .card h3 {
+      font-size: 21px;
+      line-height: 1.25;
+      margin: 7px 0 10px
+    }
+
+    .meta {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 14px;
+      margin: 12px 0
+    }
+
+    .desc {
+      font-size: 14px;
+      min-height: 42px
+    }
+
+    .capacity {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin: 14px 0 6px
+    }
+
+    .bar {
+      height: 8px;
+      background: #e8eee9;
+      border-radius: 20px;
+      overflow: hidden
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      background: var(--green2);
+      border-radius: 20px
+    }
+
+    .card-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px
+    }
+
+    .price {
+      font-weight: 800;
+      font-size: 19px
+    }
+
+    .small {
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .empty {
+      padding: 32px;
+      background: white;
+      border: 1px dashed #b9c9c0;
+      border-radius: 14px;
+      text-align: center;
+      color: var(--muted)
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 20px 0
+    }
+
+    .panel h2 {
+      margin: 0 0 14px
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin-bottom: 18px
+    }
+
+    .stat {
+      padding: 15px;
+      background: #f2f6f2;
+      border-radius: 12px
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    .stat strong {
+      font-size: 25px
+    }
+
+    .table-wrap {
+      overflow: auto
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 650px
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 11px;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 700
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: #12221db8;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 10
+    }
+
+    .modal.open {
+      display: flex
+    }
+
+    .dialog {
+      background: white;
+      border-radius: 20px;
+      padding: 28px;
+      width: min(1000px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      box-shadow: 0 24px 80px #071b1680;
+      border: 1px solid #e4ebe6
+    }
+    #eventModal .dialog { width: min(1000px, 100%); }
+    #eventModal .form-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px 18px; }
+    #eventModal .field { padding: 12px; margin: 0; border: 1px solid #edf0ed; border-radius: 12px; background: #fcfdfb; }
+    #eventModal .field.full { grid-column: auto; }
+    #eventModal .field:has(#eDescription), #eventModal .field:has(#eTopicTitle), #eventModal .field:has(#eTopicContent), #eventModal .field:has(#ePhoto) { grid-column: auto; }
+    #eventModal .field input, #eventModal .field select, #eventModal .field textarea { border-radius: 10px; min-height: 44px; }
+    #eventModal .field textarea { min-height: 100px; }
+    #eventModal .dialog-actions { position: sticky; bottom: -28px; background: white; padding: 16px 0 2px; }
+    @media (max-width: 720px) { .dialog { padding: 18px; } #eventModal .form-grid { grid-template-columns: 1fr; } #eventModal .field.full { grid-column: auto; } }
+
+    .dialog h2 {
+      margin-top: 0
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px
+    }
+
+    .field {
+      display: grid;
+      gap: 5px;
+      margin-bottom: 12px
+    }
+
+    .field.full {
+      grid-column: 1/-1
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: 700
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid #cbd7d0;
+      border-radius: 9px;
+      padding: 11px;
+      font: inherit;
+      background: white
+    }
+
+    .dialog-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 16px
+    }
+
+    .notice {
+      padding: 12px 14px;
+      background: #fff5e9;
+      border: 1px solid #f0d6b8;
+      border-radius: 10px;
+      font-size: 13px;
+      margin: 18px 0
+    }
+
+    .hidden {
+      display: none !important
+    }
+
+    footer {
+      padding: 22px 0;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--line)
+    }
+
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      background: #e8f2ed;
+      color: var(--green);
+      font-size: 12px;
+      padding: 4px 8px;
+      font-weight: 700
+    }
+
+    /* Version 5: refined warm editorial identity */
+    body {
+      background: var(--cream);
+      letter-spacing: .005em
+    }
+
+    header {
+      background: linear-gradient(118deg, #214f45 0%, #2c6658 68%, #3c7564 100%);
+      padding: 34px 18px 30px
+    }
+
+    .wrap {
+      max-width: 1120px
+    }
+
+    .hero h1 {
+      letter-spacing: -.035em;
+      font-weight: 780
+    }
+
+    .hero p {
+      line-height: 1.65
+    }
+
+    .tag {
+      background: #ffffff0b;
+      backdrop-filter: blur(4px)
+    }
+
+    main {
+      padding-top: 28px
+    }
+
+    .toolbar {
+      margin-bottom: 22px
+    }
+
+    .toolbar h2,
+    .section-heading h2 {
+      letter-spacing: -.025em
+    }
+
+    .intro {
+      gap: 18px;
+      margin-bottom: 34px
+    }
+
+    .daily-card {
+      background: var(--sand);
+      border-radius: 22px;
+      min-height: 290px;
+      box-shadow: 0 10px 30px #214f450b
+    }
+
+    .daily-copy {
+      padding: clamp(20px, 3vw, 30px)
+    }
+
+    .daily-copy .eyebrow,
+    .post-kind {
+      letter-spacing: .14em;
+      font-size: 10px
+    }
+
+    .daily-copy h2 {
+      letter-spacing: -.035em;
+      font-weight: 780
+    }
+
+    .daily-copy p {
+      line-height: 1.7
+    }
+
+    .daily-art {
+      background: var(--sage);
+      min-height: 290px;
+      object-fit: cover
+    }
+
+    .quick-links {
+      gap: 10px
+    }
+
+    .quick-link {
+      border-radius: 17px;
+      padding: 20px;
+      transition: transform .18s ease, box-shadow .18s ease;
+      border-color: #e1e6df;
+      box-shadow: 0 4px 18px #214f4506
+    }
+
+    .quick-link:hover,
+    .post-card:hover,
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px #214f4510
+    }
+
+    .quick-link .symbol {
+      background: var(--sage);
+      color: var(--green);
+      width: 48px;
+      height: 48px
+    }
+
+    .quick-link h3 {
+      letter-spacing: -.015em
+    }
+
+    .section-heading {
+      margin-top: 34px;
+      margin-bottom: 16px
+    }
+
+    .post-grid {
+      gap: 18px
+    }
+
+    .post-card {
+      border-radius: 18px;
+      border-color: #e5e5dc;
+      box-shadow: 0 4px 16px #214f4506;
+      transition: transform .18s ease, box-shadow .18s ease
+    }
+
+    .post-photo {
+      height: 190px;
+      background: var(--sage)
+    }
+
+    .post-body {
+      padding: 20px
+    }
+
+    .post-body h3 {
+      letter-spacing: -.02em
+    }
+
+    .post-body p {
+      line-height: 1.7;
+      color: #3c4b45
+    }
+
+    .card {
+      border-radius: 18px;
+      border-color: #e3e5dc;
+      transition: transform .18s ease, box-shadow .18s ease
+    }
+
+    .card-top {
+      height: 5px;
+      background: linear-gradient(90deg, var(--orange), #e4b17b)
+    }
+
+    .event-photo {
+      height: 205px
+    }
+
+    .card-body {
+      padding: 21px
+    }
+
+    button,
+    .btn {
+      transition: background .15s ease, transform .15s ease
+    }
+
+    button:active {
+      transform: translateY(1px)
+    }
+
+    button.secondary {
+      background: #fffdf8
+    }
+
+    button:focus-visible {
+      outline: 3px solid #d5a16d;
+      outline-offset: 3px
+    }
+
+    .filters button {
+      border-radius: 999px;
+      padding: 9px 14px
+    }
+
+    .filters button.active {
+      background: var(--green2)
+    }
+
+    .pill {
+      background: #e5eee7
+    }
+
+    /* Version 8: prioritize current workshops immediately; remove large daily hero from the public homepage */
+    .intro,
+    #dailyLibraryHeading {
+      display: none !important
+    }
+
+    #postGrid {
+      display: none !important
+    }
+
+    .section-heading {
+      margin-top: 8px;
+      margin-bottom: 14px
+    }
+
+    .toolbar {
+      margin-bottom: 12px
+    }
+
+    .quick-links {
+      align-content: start
+    }
+
+    .panel {
+      border-radius: 18px;
+      box-shadow: 0 6px 24px #214f4508
+    }
+
+    @media(max-width:700px) {
+      header {
+        padding: 26px 0 24px
+      }
+
+      .daily-card {
+        grid-template-columns: 1fr
+      }
+
+      .daily-art {
+        height: 205px;
+        min-height: 205px;
+        grid-row: 1
+      }
+
+      .quick-links {
+        grid-template-columns: 1fr
+      }
+
+      .post-photo {
+        height: 180px
+      }
+    }
+
+    @media(max-width:700px) {
+      .intro {
+        grid-template-columns: 1fr
+      }
+
+      .daily-card {
+        grid-template-columns: 1fr
+      }
+
+      .daily-art {
+        height: 170px;
+        min-height: 170px;
+        grid-row: 1
+      }
+
+      .daily-copy {
+        padding: 20px
+      }
+
+      .quick-links {
+        grid-template-columns: 1fr
+      }
+    }
+
+    @media(max-width:560px) {
+      .form-grid {
+        grid-template-columns: 1fr
+      }
+
+      .field.full {
+        grid-column: auto
+      }
+
+      .hero {
+        align-items: start
+      }
+
+      .toolbar {
+        align-items: start
+      }
+
+      .daily-copy h2 {
+        font-size: 27px
+      }
+    }
+  
+    /* Responsive gallery and biography additions */
+    .space-section{max-width:1100px;margin:30px auto;padding:0 18px}
+    .space-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;}
+    .space-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}
+    .space-gallery img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:#e8eee9}
+    .bio-layout{display:grid;grid-template-columns:minmax(180px,280px) minmax(0,1fr);gap:22px;align-items:start}
+    .bio-photo{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:14px;background:#e8eee9;display:none}
+    .admin-image-preview{width:100%;max-width:260px;aspect-ratio:4/3;object-fit:cover;border-radius:10px;display:none;margin-top:8px}
+    .upload-help{font-size:12px;color:var(--muted);margin-top:5px}
+    .space-section h2{margin-top:0}
+    .card .event-photo,.post-photo{aspect-ratio:4/3;height:auto;object-fit:cover}
+    @media(max-width:760px){
+      .wrap{padding-left:14px;padding-right:14px}
+      .intro{grid-template-columns:1fr}
+      .daily-card{grid-template-columns:1fr}
+      .daily-art{height:auto;aspect-ratio:16/9;min-height:0;grid-row:1}
+      .grid,.post-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+      .card-body{padding:13px}
+      .card h3{font-size:18px}
+      .desc{min-height:0}
+      .space-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .bio-layout{grid-template-columns:1fr}
+      .bio-photo{max-width:240px;aspect-ratio:4/3}
+      .card-foot{align-items:stretch;flex-direction:column}
+      .card-foot button{width:100%}
+    }
+    @media(max-width:440px){
+      body{font-size:15px}
+      header{padding:22px 0}
+      .grid,.post-grid{grid-template-columns:1fr}
+      .space-gallery{grid-template-columns:1fr}
+      .filters{gap:6px}
+      .filters button{font-size:13px;padding:8px 10px}
+      .panel{padding:14px}
+      .space-panel{padding:15px}
+      .dialog{padding:16px;max-height:92vh;overflow:auto}
+      button,.btn{min-height:42px}
+    }
+
+</style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://cseghpzzvbbfophnoiyv.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_8C4zlGP8GUzsG7f2AuF3mw_yhvBfrJS";
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+  </script>
+</head>
+
+<body>
+  <header>
+    <div class="wrap hero">
+      <div>
+        <div class="brand">Простор за учење, стварање и нове идеје</div>
+        <h1>Отварамо прозоре</h1>
+        <p>Свака радионица доноси своју тему, корисне текстове, фотографије, савете и креативне задатке — а затим и
+          једноставну пријаву.</p>
+      </div>
+      <a id="topPhoneLink" href="tel:0644188987" class="btn" style="display:inline-block;text-decoration:none;white-space:nowrap;background:#fff;color:#24584d;border:2px solid #dce8df">📞 Позовите нас: 064 418 89 87</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="toolbar">
+      <div>
+        <h2>Добро дошли у наш свет идеја</h2>
+        <div class="small">Сваког дана нови разлог да нешто научимо, створимо или поделимо.</div>
+      </div>
+      <div class="actions"><button id="addBtn" class="hidden">+ Додај радионицу</button></div>
+    </div>
+    <section class="intro" aria-label="Sadržaj dana">
+      <article class="daily-card">
+        <div class="daily-copy">
+          <div class="eyebrow">Мисао дана · Отварамо прозоре</div>
+          <h2 id="dailyTitle">Svako dete ima svoj način da zablista</h2>
+          <p id="dailyText">Nije potrebno da svi stvaramo na isti način. Važno je da otkrijemo ono što nas raduje i da
+            imamo priliku da rastemo.</p><button class="secondary" id="dailyReadBtn">Pročitaj temu dana</button>
+        </div><img class="daily-art" id="dailyPhoto" src="" alt="Ilustracija teme dana">
+      </article>
+      <div class="quick-links">
+        <div class="quick-link">
+          <div class="symbol">📚</div>
+          <div>
+            <h3>Teme koje poučavaju</h3>
+            <p>Kratki tekstovi o emocijama, učenju i odnosima.</p>
+          </div>
+        </div>
+        <div class="quick-link">
+          <div class="symbol">💡</div>
+          <div>
+            <h3>Креативни кутак</h3>
+            <p>Male ideje i aktivnosti za decu i porodicu.</p>
+          </div>
+        </div>
+        <div class="quick-link">
+          <div class="symbol">🎨</div>
+          <div>
+            <h3>Радионице</h3>
+            <p>Pronađite program i pošaljite prijavu.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="section-heading" id="dailyLibraryHeading">
+      <div>
+        <h2>Tematski sadržaji у okviru radionica</h2>
+        <p>Изаберитеte radionicu da biste pročitali uvod, savete, zanimljivosti i kreativne zadatke.</p>
+      </div><span class="pill">Sadržaj uz svaku temu</span>
+    </div>
+    <div id="postGrid" class="post-grid"></div>
+    <div class="section-heading">
+      <div>
+        <h2>Актуелне радионице</h2>
+        <p>Изаберитеte program koji vas zanima. Mesto se potvrđuje nakon pregleda prijave.</p>
+      </div>
+    </div>
+    <div class="filters" id="filters"><button class="active" data-filter="Sve">Све радионице</button><button
+        data-filter="За децу и младе">За децу и младе</button><button data-filter="За родитеље">За родитеље</button><button
+        data-filter="За одрасле">За одрасле</button><button data-filter="Креативне радионице">Креативне радионице</button></div>
+    <div id="eventGrid" class="grid"></div>
+    <section id="adminPanel" class="panel hidden">
+      <h2>Управљачки панел</h2>
+      <p class="small">Овде уређујете текст почетне странице, објаве, садржаје радионица и пријаве. Текстови почетне странице чувају се у Supabase бази.</p>
+      <h3>Уређивање почетне странице</h3>
+      <p class="small">Овде можете мењати горњи натпис, главни наслов, уводни текст и текст на дну сајта. Измене се чувају у Supabase бази.</p>
+      <form id="siteSettingsForm" class="panel" style="margin:12px 0 22px;background:#fcfdfb">
+        <div class="field"><label for="sBrand">Горњи натпис</label><input id="sBrand" maxlength="160" required></div>
+        <div class="field"><label for="sTitle">Главни наслов</label><input id="sTitle" maxlength="160" required></div>
+        <div class="field"><label for="sSubtitle">Текст испод главног наслова</label><textarea id="sSubtitle" rows="3" maxlength="600" required></textarea></div>
+        <div class="field"><label for="sWelcomeTitle">Наслов изнад радионица</label><input id="sWelcomeTitle" maxlength="160" required></div>
+        <div class="field"><label for="sWelcomeText">Кратак уводни текст</label><textarea id="sWelcomeText" rows="2" maxlength="400" required></textarea></div>
+        <div class="field"><label for="sFooter">Текст на дну сајта</label><input id="sFooter" maxlength="240" required></div>
+        <div class="field"><label for="sPhone">Мобилни телефон за позив</label><input id="sPhone" type="tel" maxlength="30" placeholder="0644188987" required></div>
+        <div class="field full"><label for="sBiography">Биографија — текст који ће бити приказан на сајту</label><textarea id="sBiography" rows="7" maxlength="6000" placeholder="Овде унесите своју биографију, образовање, искуство и области рада."></textarea></div>
+        <div class="field"><label for="sBiographyPhoto">Ваша оригинална фотографија</label><input id="sBiographyPhoto" type="file" accept="image/jpeg,image/png,image/webp"><div class="upload-help">Фотографија остаје оригинална. Највише 700 KB. Можете је заменити кад год желите.</div><img id="sBiographyPhotoPreview" class="admin-image-preview" alt="Преглед фотографије биографије"><button type="button" class="secondary" id="removeBiographyPhotoBtn" style="margin-top:8px">Уклони фотографију</button></div>
+        <div class="field full"><label for="sSpacePhotos">Фотографије простора (до 3)</label><input id="sSpacePhotos" type="file" accept="image/jpeg,image/png,image/webp" multiple><div class="upload-help">Изаберите до 3 фотографије. Свака мора бити до 700 KB. У приказу ће све имати исти формат 4:3.</div><div id="sSpacePhotoPreviews" class="space-gallery"></div><button type="button" class="secondary" id="removeSpacePhotosBtn" style="margin-top:8px">Уклони фотографије простора</button></div>
+        <div class="dialog-actions"><button type="submit" id="saveSiteSettingsBtn">Сачувај измене</button></div>
+      </form>
+      <div class="actions" style="margin-bottom:18px"><button id="addPostBtn">+ Нова објава</button></div>
+      <h3>Objave i sadržaj</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Naslov</th>
+              <th>Рубрика</th>
+              <th>Датум</th>
+              <th>Радње</th>
+            </tr>
+          </thead>
+          <tbody id="postRows"></tbody>
+        </table>
+      </div>
+      <h3>Upravljanje radionicama</h3>
+      <div class="stats" id="stats"></div>
+      <div class="actions" style="margin-bottom:14px"><button id="exportBtn">Izvezi prijave (CSV)</button><button
+          class="secondary" id="resetBtn">Vrati demo podatke</button></div>
+      <h3>Upravljanje radionicama</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Радионица</th>
+              <th>Термин</th>
+              <th>Пријаве</th>
+              <th>Радње</th>
+            </tr>
+          </thead>
+          <tbody id="eventRows"></tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Радионица</th>
+              <th>Учесник</th>
+              <th>Контакт</th>
+              <th>Status пријаве</th>
+              <th>Датум пријаве</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="bookingRows"></tbody>
+        </table>
+      </div>
+      <div class="notice">Радионице, објаве и статуси пријава чувају се у Supabase бази. Не бришите радионицу која има пријаве.</div>
+    </section>
+
+  </main>
+  <section id="spaceSection" class="space-section" style="display:none">
+    <div class="space-panel">
+      <h2>Наш простор</h2>
+      <p>Радионице се одржавају у пријатном и опуштеном амбијенту, уз кафу, чај или освежавајући напитак по избору.</p>
+      <div id="publicSpaceGallery" class="space-gallery"></div>
+    </div>
+  </section>
+  <section id="biographySection" class="wrap panel" style="margin-top:30px;margin-bottom:24px;display:none">
+    <h2>О водитељу радионица</h2>
+    <div class="bio-layout"><img id="publicBiographyPhoto" class="bio-photo" alt="Фотографија водитеља радионица"><div id="publicBiography" style="white-space:pre-line;line-height:1.8">Биографија ће ускоро бити доступна.</div></div>
+  </section>
+  <footer>
+    <div class="wrap" id="publicFooterText">За додатне информације о радионицама, позовите нас.</div>
+    <div class="wrap" style="margin-top:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <strong>Милош Миловановић</strong>
+      <a id="publicPhoneLink" href="tel:0644188987" class="btn" style="display:inline-block;text-decoration:none">Позовите нас: 064 418 89 87</a>
+    </div>
+    <div class="wrap" style="margin-top:16px;display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap">
+      <button type="button" class="secondary" id="adminToggle" style="font-size:12px;padding:7px 12px">Приступ за администратора</button>
+      <button id="addBtn" class="hidden">+ Додај радионицу</button>
+    </div>
+  </footer>
+
+  <div class="modal" id="adminLoginModal">
+    <div class="dialog">
+      <h2>Prijava administratora</h2>
+      <p>Unesite e-mail i lozinku administratora registrovanog у Supabase Auth-u.</p>
+      <form id="adminLoginForm">
+        <div class="field"><label for="adminEmail">E-mail</label><input id="adminEmail" type="email" required autocomplete="username"></div>
+        <div class="field"><label for="adminPassword">Lozinka</label><input id="adminPassword" type="password" required autocomplete="current-password"></div>
+        <div class="dialog-actions">
+          <button type="button" class="secondary" id="cancelAdminLogin">Откажи</button>
+          <button type="submit" id="adminLoginSubmit">Пријави се</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal" id="topicModal">
+    <div class="dialog topic-dialog">
+      <div class="category" id="topicCategory"></div>
+      <h2 id="topicTitle"></h2><img id="topicPhoto" class="event-photo hidden" style="border-radius:12px;margin:12px 0"
+        alt="Fotografija teme">
+      <div id="topicContent" class="topic-content"></div>
+      <div class="topic-facts" id="topicFacts"></div>
+      <div class="dialog-actions"><button type="button" class="secondary"
+          data-close="topicModal">Zatvori</button><button type="button" id="topicBookBtn">Пријави се na
+          radionicu</button></div>
+    </div>
+  </div>
+  <div class="modal" id="bookingModal">
+    <div class="dialog">
+      <h2>Prijava za radionicu</h2>
+      <p id="bookingEventName"></p>
+      <form id="bookingForm"><input type="hidden" id="bookingEventId">
+        <div class="field"><label for="personName">Име и презиме</label><input id="personName" required maxlength="100"
+            autocomplete="name"></div>
+        <div class="field"><label for="personContact">Telefon ili e-mail</label><input id="personContact" required
+            maxlength="150" autocomplete="email"></div>
+        
+<div class="field" id="participantNameField">
+  <label for="participantName" id="participantNameLabel">Име и презиме детета / учесника</label>
+  <input id="participantName" required maxlength="100" autocomplete="off">
+</div>
+<div class="field" id="participantAgeField">
+  <label for="participantAge" id="participantAgeLabel">Узраст детета</label>
+  <input id="participantAge" type="number" min="0" max="120">
+</div>
+<div class="small" id="bookingAudienceHint" style="margin-top:-4px;margin-bottom:8px"></div>
+<div class="field">
+  <label for="personNote">Напомена (није обавезно)</label>
+  <textarea id="personNote" rows="2" maxlength="300" placeholder="Наведите додатне информације ако су важне за радионицу."></textarea>
+</div>
+<div class="field">
+  <label>
+    <input id="privacyConsent" type="checkbox" required>
+    Сагласан/сагласна сам са обрадом података ради пријаве на радионицу.
+  </label>
+</div>
+<div class="dialog-actions">
+  <button type="button" class="secondary" data-close="bookingModal">Одустани</button>
+  <button type="submit">Пошаљи пријаву</button>
+</div>
+
+            
+      </form>
+    </div>
+  </div>
+  <div class="modal" id="eventModal">
+    <div class="dialog">
+      <h2 id="eventModalTitle">Нова радионица</h2>
+      <form id="eventForm"><input type="hidden" id="eId">
+        <div class="form-grid">
+          <div class="field full"><label for="eTitle">Назив радионице</label><input id="eTitle" required
+              maxlength="100"></div>
+          <div class="field"><label for="eCategory">Категорија</label><select id="eCategory">
+              <option>За децу и младе</option>
+              <option>За родитеље</option>
+              <option>За одрасле</option>
+              <option>Креативне радионице</option>
+            </select></div>
+          <div class="field"><label for="eDate">Датум</label><input id="eDate" type="date" required></div>
+          <div class="field"><label for="eTime">Време</label><input id="eTime" type="time" required></div>
+          <div class="field full"><label for="eLocation">Локација радионице</label><input id="eLocation" maxlength="180" placeholder="Унесите адресу или место одржавања радионице"></div>
+          <div class="field"><label for="eDuration">Трајање (минута)</label><input id="eDuration" type="number"
+              min="15" max="480" value="90" required></div>
+          <div class="field"><label for="ePrice">Цена (РСД)</label><input id="ePrice" type="number" min="0" value="1200"
+              required></div>
+          <div class="field"><label for="eCapacity">Укупан број места</label><input id="eCapacity" type="number" min="1"
+              max="100" value="10" required></div>
+          <div class="field"><label for="eMinimum">Минимум за одржавање</label><input id="eMinimum" type="number"
+              min="1" value="5" required></div>
+          <div class="field full"><label for="eDescription">Кратак опис</label><textarea id="eDescription" rows="3"
+              maxlength="400"></textarea></div>
+          <div class="field full"><label for="eTopicTitle">Наслов тематског садржаја</label><input id="eTopicTitle"
+              maxlength="140" placeholder="На пример: Како препознајемо и изражавамо емоције"></div>
+          <div class="field full"><label for="eTopicContent">Садржај о теми</label><textarea id="eTopicContent" rows="6"
+              maxlength="5000"
+              placeholder="Напишите увод у тему, шта ћемо истраживати и питања за размишљање..."></textarea>
+            <div class="small">Овај садржај посетиоци читају пре пријаве за радионицу.</div>
+          </div>
+          <div class="field full"><label for="ePhoto">Фотографија радионице (ЈПГ, ПНГ или ВебП; до 700 КБ)</label><input
+              id="ePhoto" type="file" accept="image/jpeg,image/png,image/webp"><img id="ePhotoPreview"
+              class="preview hidden" alt="Преглед изабране фотографије">
+            <div class="small">Најбоље су стварне фотографије простора, материјала или активности. Не постављајте
+              фотографије деце без одговарајуће сагласности родитеља.</div><label><input id="eRemovePhoto"
+                type="checkbox" style="width:auto"> Уклони постојећу фотографију</label>
+          </div>
+        </div>
+        <div class="dialog-actions"><button type="button" class="secondary"
+            data-close="eventModal">Откажи</button><button type="submit">Сачувај измене</button></div>
+      </form>
+    </div>
+  </div>
+  <div class="modal" id="postModal">
+    <div class="dialog">
+      <h2 id="postModalTitle">Нова објава</h2>
+      <form id="postForm"><input type="hidden" id="pId">
+        <div class="field"><label for="pTitle">Наслов објаве</label><input id="pTitle" required maxlength="120"></div>
+        <div class="field"><label for="pCategory">Рубрика</label><select id="pCategory">
+            <option>Мисао дана</option>
+            <option>Тема дана</option>
+            <option>За родитеље</option>
+            <option>Креативни кутак</option>
+            <option>Образовна тема</option>
+          </select></div>
+        <div class="field"><label for="pDate">Датум приказивања</label><input id="pDate" type="date" required></div>
+        <div class="field"><label for="pText">Текст објаве</label><textarea id="pText" rows="5" required
+            maxlength="1500" placeholder="Напишите корисну, топлу и јасну поруку..."></textarea></div>
+        <div class="field"><label for="pImage">Фотографија (ЈПГ, ПНГ или ВебП; до 700 КБ)</label><input id="pImage"
+            type="file" accept="image/jpeg,image/png,image/webp"><img id="pImagePreview" class="preview hidden"
+            alt="Pregled slike">
+          <div class="small">Koristi fotografije ili ilustracije za koje imaš pravo korišćenja. Za fotografije dece
+            potrebna je odgovarajuća saglasnost.</div><label><input id="pRemoveImage" type="checkbox"
+              style="width:auto"> Уклони постојећу фотографију</label>
+        </div>
+        <div class="dialog-actions"><button type="button" class="secondary"
+            data-close="postModal">Откажи</button><button type="submit">Сачувај objavu</button></div>
+      </form>
+    </div>
+  </div>
+  <script>
+    const seedEvents = [
+      { id: "w1", title: "Upoznajem svoje emocije", category: "Деца", date: futureDate(5), time: "11:00", duration: 75, price: 1000, capacity: 10, minimum: 5, description: "Edukativna radionica kroz priču, kartice i igru.", topicTitle: "Emocije su poruke koje možemo da naučimo da razumemo", topicContent: "Sva osećanja imaju svoje mesto. Radost, tuga, ljutnja i strah govore nam nešto o tome šta nam je važno i šta nam je potrebno.\n\nNa radionici ćemo kroz priču, kartice i igru učiti da prepoznamo osećanja, pronađemo reči kojima ih opisujemo i upoznamo načine da se umirimo kada nam je teško.\n\nPitanje za razmišljanje: Kako tvoje telo pokazuje da si srećan, zabrinut ili ljut?\n\nMala aktivnost kod kuće: nacrtaj svoje današnje raspoloženje koristeći boje i oblike.", active: true },
+      { id: "w2", title: "Granice bez vikanja", category: "Родитељи", date: futureDate(7), time: "18:00", duration: 90, price: 1200, capacity: 12, minimum: 6, description: "Praktičan susret za roditelje i svakodnevne porodične situacije.", topicTitle: "Jasne granice mogu da budu mirne i dosledne", topicContent: "Granice pomažu deci da razumeju šta se očekuje od njih i šta je bezbedno. Postavljanje granica ne mora da podrazumeva vikanje ili ponižavanje.\n\nKorisno je da govorimo kratko i jasno, imenujemo ponašanje umesto da etiketiramo dete i ponudimo prihvatljiv izbor kada je to moguće.\n\nPrimer: „Ne dozvoljavam da udaraš. Možeš da mi kažeš da si ljut ili da napraviš pauzu.“\n\nNa radionici ćemo razmatrati svakodnevne situacije i vežbati načine da održimo granice uz poštovanje i povezanost.", active: true },
+      { id: "w3", title: "Fotografija telefonom za početnike", category: "Креативно", date: futureDate(9), time: "17:30", duration: 120, price: 1800, capacity: 8, minimum: 4, description: "Kompozicija, svetlo i praktične vežbe fotografisanja.", topicTitle: "Svet iz mog ugla: kako da primetimo dobru fotografiju", topicContent: "Dobra fotografija ne zavisi samo od skupog uređaja. Svetlo, kadar i pažnja prema detaljima često su mnogo važniji.\n\nProbaj da fotografišeš isti predmet iz tri ugla: odozgo, iz nivoa očiju i izbliza. Obrati pažnju kako se menja priča koju fotografija prenosi.\n\nNa radionici ćemo vežbati kompoziciju, prirodno svetlo, fokus i način da fotografijom ispričamo kratku priču. Ponesi telefon sa kamerom i radoznalost.", active: true }
+    ];
+    const seedPosts = [
+      { id: "p1", title: "Svako dete ima svoj način da zablista", category: "Мисао дана", date: todayDate(), text: "Nije potrebno da svi crtamo isto, učimo istim tempom ili razmišljamo na isti način. Važno je da otkrijemo ono у čemu smo dobri i da imamo priliku da rastemo.\n\nPitanje za danas: Šta je nešto što voliš da stvaraš?", image: "", featured: true },
+      { id: "p2", title: "Kako da saslušamo dete", category: "За родитеље", date: todayDate(), text: "Ponekad detetu nije potreban brz savet, već osećaj da ga zaista slušamo. Spustimo se na njegov nivo, odložimo telefon i postavimo jedno jednostavno pitanje: ‘Želiš li da mi ispričaš šta se dogodilo?’", image: "" },
+      { id: "p3", title: "Kreativni izazov: boje mog dana", category: "Креативни кутак", date: todayDate(), text: "Uzmi papir i nekoliko boja. Nacrtaj kako se danas osećaš, bez potrebe da crtež bude savršen. Zatim, ako želiš, ispričaj nekome zašto si izabrao baš te boje.", image: "" }
+    ];
+    function todayDate() { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0") }
+    function futureDate(n) { const d = new Date(); d.setDate(d.getDate() + n); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0") }
+    const $ = id => document.getElementById(id);
+    let events = [], bookings = load("op_bookings", []), posts = load("op_posts", seedPosts);
+    // Број пријављених за јавни приказ — само бројеви, без личних података.
+    let publicBookedCounts = {};
+    let filter = "Sve", admin = false;
+    function load(k, fallback) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : JSON.parse(JSON.stringify(fallback)) } catch (e) { return JSON.parse(JSON.stringify(fallback)) } }
+    function save() { localStorage.setItem("op_events", JSON.stringify(events)); localStorage.setItem("op_bookings", JSON.stringify(bookings)); localStorage.setItem("op_posts", JSON.stringify(posts)) }
+    function bookingStatus(b) {
+      const map = {
+        received: "Пријава примљена", confirmed: "Место потврђено",
+        waiting_list: "Листа чекања", cancelled: "Отказано",
+        Prijavljeno: "Пријава примљена", Plaćeno: "Место потврђено", Otkazano: "Отказано"
+      };
+      return map[b.status] || b.status || "Пријава примљена";
+    }
+    function databaseBookingStatus(status) {
+      return ({"Пријава примљена":"received", "Место потврђено":"confirmed", "Листа чекања":"waiting_list", "Отказано":"cancelled"})[status] || status;
+    }
+    function bookedCount(id) {
+      if (admin) return bookings.filter(b => b.eventId === id && !["Отказано", "Листа чекања"].includes(bookingStatus(b))).length;
+      return Number(publicBookedCounts[id] || 0);
+    }
+    async function loadPublicWorkshopCounts() {
+      const { data, error } = await supabaseClient.rpc("get_public_workshop_counts");
+      if (error) {
+        console.warn("Број слободних места није учитан из базе:", error.message);
+        return false;
+      }
+      publicBookedCounts = {};
+      (data || []).forEach(row => { publicBookedCounts[row.workshop_id] = Number(row.booked_count || 0); });
+      render();
+      return true;
+    }
+    function fmtDate(s) { if (!s) return ""; return new Date(s + "T12:00:00").toLocaleDateString("sr-RS", { day: "numeric", month: "long", year: "numeric" }) }
+    function esc(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])) }
+    function categoryGroup(value) {
+      const c = String(value || "").trim().toLocaleLowerCase("sr-RS");
+      if (["деца", "за децу", "за децу и младе", "млади"].includes(c)) return "За децу и младе";
+      if (["родитељи", "за родитеље"].includes(c)) return "За родитеље";
+      if (["одрасли", "за одрасле", "одрасли/партнерски односи"].includes(c)) return "За одрасле";
+      if (["креативно", "креативне радионице", "креативни кутак"].includes(c)) return "Креативне радионице";
+      return value || "Креативне радионице";
+    }
+    function isChildOrFamilyCategory(value) {
+      const c = categoryGroup(value);
+      return c === "За децу и младе" || c === "За родитеље";
+    }
+    function updateBookingFields() {
+      const event = events.find(x => x.id === $("bookingEventId").value);
+      if (!event) return;
+      const group = categoryGroup(event.category);
+      const childOrFamily = isChildOrFamilyCategory(group);
+      $("participantNameField").classList.toggle("hidden", !childOrFamily);
+      $("participantAgeField").classList.toggle("hidden", !childOrFamily);
+      $("participantName").required = childOrFamily;
+      $("participantAge").required = group === "За децу и младе";
+      $("participantNameLabel").textContent = group === "За родитеље" ? "Име и презиме детета" : "Име и презиме детета / учесника";
+      $("participantAgeLabel").textContent = "Узраст детета";
+      $("bookingAudienceHint").textContent = group === "За одрасле" ? "Пријављујете се као одрасла особа. Није потребно уносити податке о детету." : group === "За родитеље" ? "За ову радионицу потребни су подаци о детету које учествује са родитељем." : group === "За децу и младе" ? "Унесите податке о детету/учеснику." : "Ако је радионица намењена деци или породици, унесите податке о детету када је потребно.";
+      const noteExamples = {
+        "За децу и младе": "Нпр. посебна интересовања детета или информација важна за учешће (није обавезно).",
+        "За родитеље": "Нпр. узраст детета, шта бисте волели да заједно увежбате или питање за радионицу.",
+        "За одрасле": "Нпр. шта бисте волели да научите, тема која вас посебно занима или питање за разговор.",
+        "Креативне радионице": "Нпр. претходно искуство, материјал који доносите или шта бисте волели да направите.",
+      };
+      $("personNote").placeholder = noteExamples[group] || "Наведите додатне информације које су важне за радионицу (није обавезно).";
+    }
+    async function loadWorkshopsFromSupabase() {
+      const { data, error } = await supabaseClient
+        .from("public_workshops")
+        .select("*");
+
+      if (error) {
+        console.error("Greška pri učitavanju radionica:", error);
+        alert("Радионице trenutno nisu učitane iz baze.");
+        return;
+      }
+
+      const savedLocations = load("op_workshop_locations", {});
+      events = data.map(w => {
+        const eventDate = w.event_date ? new Date(w.event_date) : null;
+        const validDate = eventDate && !Number.isNaN(eventDate.getTime());
+        return {
+          id: w.id,
+          location: w.location || savedLocations[w.id] || "",
+          title: w.title || "",
+          category: categoryGroup(w.category || "Креативне радионице"),
+          description: w.short_description || "",
+          date: validDate ? eventDate.toISOString().slice(0, 10) : "",
+          time: validDate ? eventDate.toLocaleTimeString("sr-RS", { hour: "2-digit", minute: "2-digit", hour12: false }) : "10:00",
+          duration: w.duration_minutes || 60,
+          price: w.price_rsd || 0,
+          capacity: w.capacity || 12,
+          minimum: w.minimum_participants || 1,
+          topicTitle: w.topic_intro || "",
+          topicContent: [w.educational_content, w.tips, w.interesting_facts, w.quote_text, w.creative_task].filter(Boolean).join("\n\n"),
+          active: true,
+          photo: w.image_url || ""
+        };
+      });
+
+      render();
+      openWorkshopFromLink();
+      }
+
+    function workshopPayload(item) {
+      return {
+        title: item.title, category: item.category, short_description: item.description || "",
+        topic_intro: item.topicTitle || "", educational_content: item.topicContent || "",
+        tips: "", interesting_facts: "", quote_text: "", creative_task: "",
+        image_url: item.photo || "", age_range: "", duration_minutes: item.duration,
+        event_date: new Date(item.date + "T" + (item.time || "10:00") + ":00").toISOString(),
+        location: item.location || "", price_rsd: item.price, capacity: item.capacity,
+        minimum_participants: item.minimum, published: true
+      };
+    }
+    async function requireAdminSession() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) throw new Error("Пријавите се као администратор.");
+      const { data, error } = await supabaseClient.from("app_admins").select("user_id").eq("user_id", session.user.id).maybeSingle();
+      if (error || !data) throw new Error("Налог нема администраторска овлашћења.");
+      return session;
+    }
+    const defaultSiteSettings = {
+      id: "homepage",
+      brand_text: "Простор за учење, стварање и нове идеје",
+      hero_title: "Отварамо прозоре",
+      hero_text: "Свака радионица доноси своју тему, корисне текстове, фотографије, савете и креативне задатке — а затим и једноставну пријаву.",
+      welcome_title: "Добро дошли у наш свет идеја",
+      welcome_text: "Сваког дана нови разлог да нешто научимо, створимо или поделимо.",
+      footer_text: "За додатне информације о радионицама, позовите нас.",
+      contact_phone: "0644188987",
+      biography_text: "",
+      biography_photo_data: "",
+      space_gallery_data: "[]"
+    };
+    let currentBiographyPhoto = "";
+    let currentSpacePhotos = [];
+    function readImageUnderLimit(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) return resolve(null);
+        if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return reject(new Error("Изаберите JPG, PNG или WebP слику."));
+        if (file.size > 700 * 1024) return reject(new Error("Слика је већа од 700 KB. Изаберите мању датотеку."));
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ""));
+        reader.onerror = () => reject(new Error("Слика није могла да се учита."));
+        reader.readAsDataURL(file);
+      });
+    }
+    function renderSpacePreviews() {
+      const holder = $("sSpacePhotoPreviews");
+      if (!holder) return;
+      holder.innerHTML = "";
+      currentSpacePhotos.forEach((src, i) => {
+        const img = document.createElement("img"); img.src = src; img.alt = "Преглед фотографије простора " + (i+1); img.style.cssText = "width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px"; holder.appendChild(img);
+      });
+    }
+    function renderPublicSpaceGallery() {
+      const holder = $("publicSpaceGallery");
+      holder.innerHTML = "";
+      currentSpacePhotos.forEach((src, i) => { const img=document.createElement("img"); img.src=src; img.alt="Простор за радионице, фотографија "+(i+1); holder.appendChild(img); });
+      $("spaceSection").style.display = currentSpacePhotos.length ? "block" : "none";
+    }
+    function applySiteSettings(settings) {
+      const v = { ...defaultSiteSettings, ...(settings || {}) };
+      document.querySelector(".brand").textContent = v.brand_text;
+      document.querySelector(".hero h1").textContent = v.hero_title;
+      document.querySelector(".hero p").textContent = v.hero_text;
+      const welcome = document.querySelector(".toolbar h2");
+      if (welcome) welcome.textContent = v.welcome_title;
+      const welcomeText = document.querySelector(".toolbar .small");
+      if (welcomeText) welcomeText.textContent = v.welcome_text;
+      $("publicFooterText").textContent = v.footer_text;
+      const phone = String(v.contact_phone || "0644188987").replace(/[^0-9+]/g, "");
+      const displayPhone = phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
+      $("publicPhoneLink").href = "tel:" + phone;
+      $("publicPhoneLink").textContent = "Позовите нас: " + displayPhone;
+      $("topPhoneLink").href = "tel:" + phone;
+      $("topPhoneLink").textContent = "📞 Позовите нас: " + displayPhone;
+      const biography = String(v.biography_text || "").trim();
+      $("publicBiography").textContent = biography;
+      currentBiographyPhoto = String(v.biography_photo_data || "");
+      const publicBioPhoto = $("publicBiographyPhoto");
+      publicBioPhoto.src = currentBiographyPhoto || "";
+      publicBioPhoto.style.display = currentBiographyPhoto ? "block" : "none";
+      $("biographySection").style.display = (biography || currentBiographyPhoto) ? "block" : "none";
+      try { const parsed = JSON.parse(v.space_gallery_data || "[]"); currentSpacePhotos = Array.isArray(parsed) ? parsed.filter(x => typeof x === "string" && x.startsWith("data:image/")) : []; } catch { currentSpacePhotos = []; }
+      renderSpacePreviews(); renderPublicSpaceGallery();
+      const adminBioPreview = $("sBiographyPhotoPreview"); if (adminBioPreview) { adminBioPreview.src = currentBiographyPhoto || ""; adminBioPreview.style.display = currentBiographyPhoto ? "block" : "none"; }
+      if ($("sPhone")) $("sPhone").value = v.contact_phone || "0644188987";
+      if ($("sBiography")) $("sBiography").value = v.biography_text || "";
+      ["sBrand","sTitle","sSubtitle","sWelcomeTitle","sWelcomeText","sFooter"].forEach((id, i) => {
+        const values = [v.brand_text, v.hero_title, v.hero_text, v.welcome_title, v.welcome_text, v.footer_text];
+        if ($(id)) $(id).value = values[i];
+      });
+    }
+    async function loadSiteSettings() {
+      const { data, error } = await supabaseClient.from("site_settings").select("*").eq("id", "homepage").maybeSingle();
+      if (error) { console.warn("Подешавања почетне странице нису учитана из базе:", error.message); applySiteSettings(defaultSiteSettings); return; }
+      applySiteSettings(data || defaultSiteSettings);
+    }
+    $("sBiographyPhoto").addEventListener("change", async (e) => {
+      const file = e.target.files && e.target.files[0]; if (!file) return;
+      try { currentBiographyPhoto = await readImageUnderLimit(file); const img=$("sBiographyPhotoPreview"); img.src=currentBiographyPhoto; img.style.display="block"; }
+      catch(err) { e.target.value=""; alert(err.message || "Грешка при учитавању фотографије."); }
+    });
+    $("sSpacePhotos").addEventListener("change", async (e) => {
+      const files = Array.from(e.target.files || []); if (!files.length) return;
+      if (files.length > 3) { e.target.value=""; alert("Можете изабрати највише 3 фотографије простора."); return; }
+      try { currentSpacePhotos = await Promise.all(files.map(readImageUnderLimit)); renderSpacePreviews(); }
+      catch(err) { e.target.value=""; alert(err.message || "Грешка при учитавању фотографија."); }
+    });
+    $("removeBiographyPhotoBtn").addEventListener("click", () => { currentBiographyPhoto=""; $("sBiographyPhoto").value=""; $("sBiographyPhotoPreview").src=""; $("sBiographyPhotoPreview").style.display="none"; });
+    $("removeSpacePhotosBtn").addEventListener("click", () => { currentSpacePhotos=[]; $("sSpacePhotos").value=""; renderSpacePreviews(); });
+
+    $("siteSettingsForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const button = $("saveSiteSettingsBtn");
+      button.disabled = true;
+      try {
+        await requireAdminSession();
+        const payload = {
+          id: "homepage",
+          brand_text: $("sBrand").value.trim(),
+          hero_title: $("sTitle").value.trim(),
+          hero_text: $("sSubtitle").value.trim(),
+          welcome_title: $("sWelcomeTitle").value.trim(),
+          welcome_text: $("sWelcomeText").value.trim(),
+          footer_text: $("sFooter").value.trim(),
+          contact_phone: $("sPhone").value.trim(),
+          biography_text: $("sBiography").value.trim(),
+          biography_photo_data: currentBiographyPhoto,
+          space_gallery_data: JSON.stringify(currentSpacePhotos),
+          updated_at: new Date().toISOString()
+        };
+        const { error } = await supabaseClient.from("site_settings").upsert(payload, { onConflict: "id" });
+        if (error) throw error;
+        applySiteSettings(payload);
+        alert("Измене, фотографија биографије и фотографије простора су сачуване.");
+      } catch (err) { alert("Измене нису сачуване: " + (err.message || "непозната грешка")); }
+      finally { button.disabled = false; }
+    });
+
+    async function loadPostsFromSupabase() {
+      const { data, error } = await supabaseClient.from("site_posts").select("*").order("publish_date", { ascending: false });
+      if (error) { console.warn("Објаве нису учитане из базе:", error.message); return; }
+      posts = (data || []).map(p => ({id:p.id, title:p.title, category:p.category, date:p.publish_date, text:p.body, image:p.image_url || "", featured:!!p.featured}));
+      renderPosts();
+    }
+
+    async function loadRegistrationsFromSupabase() {
+  
+  const { data, error } = await supabaseClient.rpc("get_admin_registrations");
+
+
+
+  if (error) {
+    console.error("Грешка при учитавању пријава:", error);
+    return false;
+  }
+
+  bookings = data.map(r => ({
+    id: r.id,
+    eventId: r.workshop_id,
+    name: r.parent_name,
+    contact: r.contact_phone,
+    participantName: r.participant_name,
+    participantAge: r.participant_age,
+    note: r.note || "",
+    status: r.status,
+    created: new Date(r.created_at).toLocaleDateString("sr-RS")
+  }));
+
+  renderAdmin();
+  return true;
+}
+    function render() {
+      renderPosts();
+      const grid = $("eventGrid"), visible = events.filter(e => e.active && (filter === "Sve" || categoryGroup(e.category) === filter)).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+      grid.innerHTML = visible.length ? visible.map(e => { const n = bookedCount(e.id), left = Math.max(0, e.capacity - n), pct = Math.min(100, Math.round(n / e.capacity * 100)); return `<article class="card"><div class="card-top"></div>${e.photo ? `<img class="event-photo" src="${e.photo}" alt="Fotografija: ${esc(e.title)}">` : ``}<div class="card-body"><div class="category">${esc(categoryGroup(e.category))}</div><h3>${esc(e.title)}</h3><div class="desc">${esc(e.description || "")}</div><div class="meta"><span>📅 ${fmtDate(e.date)} · ${esc(e.time)}</span><span>◷ ${e.duration} минута</span><span>📍 ${esc(e.location || "Локација ће бити накнадно објављена")}</span></div><div class="capacity"><span>${n}/${e.capacity} места попуњено</span><strong>${left} слободно</strong></div><div class="bar"><span style="width:${pct}%"></span></div><div class="card-foot"><div><div class="price">${Number(e.price).toLocaleString("sr-RS")} РСД</div><div class="small">по учеснику</div></div><button ${left === 0 ? "disabled" : ""} onclick="openBooking('${e.id}')">${left === 0 ? "Попуњено" : "Пријави се"}</button></div><button class="secondary" style="width:100%;margin-top:9px" onclick="openTopic('${e.id}')">Прочитајте о теми радионице →</button><button class="secondary share-workshop-btn" style="width:100%;margin-top:8px" onclick="openWorkshopShare('${e.id}')">Подели радионицу</button><div class="small" style="margin-top:10px">За одржавање је потребно најмање ${e.minimum} пријава.</div>${admin ? `<div class="admin-actions"><button class="secondary" onclick="editEvent('${e.id}')">Измени</button><button class="danger" onclick="deleteEvent('${e.id}')">Обриши</button></div>` : ``}</div></article>` }).join("") : `<div class="empty">Trenutno nema radionica у ovoj kategoriji.</div>`;
+      $("addBtn").classList.toggle("hidden", !admin); $("adminPanel").classList.toggle("hidden", !admin); if (admin) renderAdmin();
+    }
+    function renderPosts() {
+      const ordered = posts.slice().sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+      const featured = ordered.find(p => p.featured) || ordered[0];
+      if (featured) {
+        $("dailyTitle").textContent = featured.title;
+        $("dailyText").textContent = featured.text;
+        const fallbackSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><rect width="800" height="600" fill="#dce8df"/><rect x="220" y="70" width="360" height="430" rx="10" fill="#fff8e9"/><path d="M400 70V500M220 285H580" stroke="#71917d" stroke-width="18"/><circle cx="400" cy="280" r="92" fill="#e7b56b"/><text x="400" y="555" text-anchor="middle" font-family="Arial" font-size="25" fill="#24584d">Prozor у svet ideja</text></svg>';
+        $("dailyPhoto").src = featured.image || "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(fallbackSvg);
+        $("dailyPhoto").alt = "Ilustracija: " + featured.title;
+        $("dailyReadBtn").onclick = () => { const card = document.getElementById("post-" + featured.id); if (card) card.scrollIntoView({ behavior: "smooth", block: "center" }); else alert(featured.title + "\n\n" + featured.text) };
+      }
+      const cards = [];
+      ordered.forEach(p => {
+        const imageHtml = p.image ? '<img class="post-photo" src="' + p.image + '" alt="Ilustracija: ' + esc(p.title) + '">' : "";
+        const adminHtml = admin ? '<div class="post-admin"><span class="small">Uredi objavu у upravljačkom panelu ispod.</span></div>' : "";
+        cards.push('<article class="post-card" id="post-' + p.id + '">' + imageHtml + '<div class="post-body"><div class="post-kind">' + esc(p.category) + '</div><h3>' + esc(p.title) + '</h3><p>' + esc(p.text) + '</p><div class="post-date">' + fmtDate(p.date) + '</div>' + adminHtml + '</div></article>');
+      });
+      $("postGrid").innerHTML = cards.join("") || '<div class="empty">Uskoro stižu nove teme i ideje.</div>';
+      if (admin) {
+        const rows = [];
+        ordered.forEach(p => rows.push('<tr><td>' + esc(p.title) + (p.image ? ' 📷' : '') + '</td><td>' + esc(p.category) + '</td><td>' + fmtDate(p.date) + '</td><td><button class="secondary" onclick="editPost(\'' + p.id + '\')">Измени</button> <button class="danger" onclick="deletePost(\'' + p.id + '\')">Обриши</button></td></tr>'));
+        $("postRows").innerHTML = rows.join("") || '<tr><td colspan="4">Nema objava.</td></tr>';
+      }
+    }
+    let workshopShareCanvas = null;
+    let workshopShareBlob = null;
+    let workshopShareText = "";
+    let workshopShareUrl = "";
+    let workshopShareFileName = "radionica.png";
+
+    function workshopShareLink(id) {
+      // Facebook crawler reads this server-rendered URL, while visitors are
+      // redirected by the Netlify Function to the selected workshop in the app.
+      return window.location.origin + "/.netlify/functions/workshop-share?id=" + encodeURIComponent(id);
+    }
+
+    function wrapCanvasText(ctx, text, maxWidth, maxLines) {
+      const words = String(text || "").trim().split(/\s+/).filter(Boolean);
+      const lines = [];
+      let line = "", used = 0;
+      for (let i = 0; i < words.length; i++) {
+        const test = line ? line + " " + words[i] : words[i];
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line); used = i; line = words[i];
+          if (lines.length === maxLines) return lines;
+          if (lines.length === maxLines - 1 && i < words.length - 1) {
+            let last = line;
+            while (last && ctx.measureText(last + "…").width > maxWidth) last = last.slice(0, -1).trim();
+            lines.push(last + "…");
+            return lines;
+          }
+        } else line = test;
+      }
+      if (line) lines.push(line);
+      if (lines.length > maxLines) lines.length = maxLines;
+      return lines;
+    }
+
+    function drawSharePhoto(ctx, img, x, y, w, h) {
+      const scale = Math.max(w / img.width, h / img.height);
+      const sw = w / scale, sh = h / scale;
+      const sx = (img.width - sw) / 2, sy = (img.height - sh) / 2;
+      ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+    }
+
+    async function createWorkshopShareImage(event) {
+      const canvas = document.createElement("canvas");
+      canvas.width = 1200; canvas.height = 1500;
+      const ctx = canvas.getContext("2d");
+      const bg = ctx.createLinearGradient(0, 0, 1200, 1500);
+      bg.addColorStop(0, "#24584d"); bg.addColorStop(1, "#183f37");
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (event.photo) {
+        try {
+          const img = new Image();
+          if (/^https?:/i.test(event.photo)) img.crossOrigin = "anonymous";
+          await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = event.photo; });
+          drawSharePhoto(ctx, img, 0, 0, 1200, 690);
+          const shade = ctx.createLinearGradient(0, 470, 0, 700);
+          shade.addColorStop(0, "rgba(24,63,55,0)"); shade.addColorStop(1, "rgba(24,63,55,.45)");
+          ctx.fillStyle = shade; ctx.fillRect(0, 470, 1200, 220);
+        } catch (err) {
+          ctx.fillStyle = "#e3ece4"; ctx.fillRect(0, 0, 1200, 690);
+          ctx.fillStyle = "#24584d"; ctx.font = "bold 48px Arial"; ctx.fillText("РАДИОНИЦА", 70, 350);
+        }
+      } else {
+        ctx.fillStyle = "#e3ece4"; ctx.fillRect(0, 0, 1200, 690);
+        ctx.fillStyle = "#24584d"; ctx.font = "bold 48px Arial"; ctx.fillText("РАДИОНИЦА", 70, 350);
+      }
+
+      ctx.fillStyle = "#d9a078"; ctx.fillRect(70, 735, 100, 8);
+      ctx.fillStyle = "#f4dfc8"; ctx.font = "bold 27px Arial";
+      ctx.fillText(String(event.category || "РАДИОНИЦА").toLocaleUpperCase("sr-RS"), 70, 790);
+
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 62px Arial";
+      const titleLines = wrapCanvasText(ctx, event.title || "Радионица", 1060, 3);
+      let y = 870;
+      titleLines.forEach(line => { ctx.fillText(line, 70, y); y += 76; });
+
+      ctx.fillStyle = "#e3ece4"; ctx.font = "30px Arial";
+      const descLines = wrapCanvasText(ctx, event.description || "Практична радионица за учење, развој и нове идеје.", 1060, 3);
+      y = Math.max(1050, y + 15);
+      descLines.forEach(line => { ctx.fillText(line, 70, y); y += 43; });
+
+      const detailY = 1240;
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 29px Arial";
+      ctx.fillText("ДАТУМ И ВРЕМЕ", 70, detailY);
+      ctx.fillStyle = "#e3ece4"; ctx.font = "29px Arial";
+      ctx.fillText((fmtDate(event.date) || "Термин у најави") + (event.time ? " · " + event.time : ""), 70, detailY + 42);
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 29px Arial";
+      ctx.fillText("ЛОКАЦИЈА", 70, detailY + 105);
+      ctx.fillStyle = "#e3ece4"; ctx.font = "29px Arial";
+      const locLines = wrapCanvasText(ctx, event.location || "Локација ће бити накнадно објављена", 720, 2);
+      locLines.forEach((line, i) => ctx.fillText(line, 70, detailY + 147 + i * 36));
+
+      ctx.fillStyle = "#f4dfc8";
+      ctx.beginPath(); ctx.roundRect(800, 1300, 330, 115, 24); ctx.fill();
+      ctx.fillStyle = "#24584d"; ctx.font = "bold 46px Arial";
+      ctx.fillText(Number(event.price || 0).toLocaleString("sr-RS") + " РСД", 830, 1367);
+      ctx.font = "24px Arial"; ctx.fillText("по учеснику", 830, 1400);
+      // Јасан позив на акцију у свакој аутоматски генерисаној слици.
+      ctx.fillStyle = "#f4dfc8";
+      ctx.beginPath(); ctx.roundRect(70, 1428, 560, 48, 18); ctx.fill();
+      ctx.fillStyle = "#24584d"; ctx.font = "bold 25px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("ПРИЈАВИ СЕ НА РАДИОНИЦУ", 350, 1460);
+      ctx.textAlign = "left";
+
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
+      if (!blob) throw new Error("Слика није могла да се припреми.");
+      return { canvas, blob };
+    }
+
+    function ensureWorkshopShareModal() {
+      if (document.getElementById("workshopShareModal")) return;
+      const modal = document.createElement("div");
+      modal.id = "workshopShareModal";
+      modal.style.cssText = "position:fixed;inset:0;z-index:10050;background:rgba(12,30,26,.78);display:none;align-items:center;justify-content:center;padding:18px;overflow:auto";
+      modal.innerHTML = `<div style="background:#fffdf7;color:#243630;width:min(100%,760px);max-height:94vh;overflow:auto;border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px"><h2 style="margin:0;font-size:22px">Припремљена објава за радионицу</h2><button type="button" id="workshopShareClose" class="secondary" style="width:auto;margin:0;padding:8px 12px">Затвори ✕</button></div>
+        <p style="margin:0 0 14px;color:#687872">Шаблон аутоматски користи податке радионице коју си изабрао.</p>
+        <img id="workshopSharePreview" alt="Преглед слике за објаву" style="display:block;width:min(100%,420px);max-height:48vh;object-fit:contain;margin:0 auto 16px;border-radius:10px;background:#e3ece4">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">
+          <button type="button" id="workshopShareNative">Покушај директно дељење</button>
+          <button type="button" id="workshopShareDownload" class="secondary">Преузми слику</button>
+          <button type="button" id="workshopShareCopy" class="secondary">Копирај текст и линк</button>
+          <button type="button" id="workshopShareFacebook" class="secondary">Отвори Фејсбук</button>
+        </div>
+        <p style="font-size:13px;color:#687872;line-height:1.5;margin:14px 0 0">За аутоматски преглед на Фејсбуку налепи линк из „Копирај текст и линк“ — Фејсбук ће сам преузети слику, наслов и опис радионице. Ако желиш, можеш додатно преузети PNG и приложити га ручно.</p>
+      </div>`;
+      document.body.appendChild(modal);
+      modal.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
+      document.getElementById("workshopShareClose").onclick = () => modal.style.display = "none";
+      document.getElementById("workshopShareNative").onclick = async () => {
+        if (!workshopShareBlob) return;
+        try {
+          const file = new File([workshopShareBlob], workshopShareFileName, { type: "image/png" });
+          if (!navigator.share || !navigator.canShare || !navigator.canShare({ files: [file] })) {
+            alert("Овај прегледач не подржава директно дељење слике. Користи дугмад за преузимање слике и копирање текста.");
+            return;
+          }
+          await navigator.share({ files: [file], title: "Радионица", text: workshopShareText, url: workshopShareUrl });
+        } catch (err) {
+          if (err && err.name !== "AbortError") alert("Директно дељење није успело. Преузми слику и копирај текст као резервну опцију.");
+        }
+      };
+      document.getElementById("workshopShareDownload").onclick = () => {
+        if (!workshopShareBlob) return;
+        const a = document.createElement("a"); a.href = URL.createObjectURL(workshopShareBlob); a.download = workshopShareFileName; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+      };
+      document.getElementById("workshopShareCopy").onclick = async () => {
+        try { await navigator.clipboard.writeText(workshopShareText); alert("Текст и линк су копирани. Налепи их у Фејсбук објаву."); }
+        catch (e) { prompt("Копирај текст и линк испод:", workshopShareText); }
+      };
+      document.getElementById("workshopShareFacebook").onclick = () => window.open("https://www.facebook.com/", "_blank", "noopener");
+    }
+
+    async function openWorkshopShare(id) {
+      const event = events.find(e => String(e.id) === String(id));
+      if (!event) { alert("Није пронађена изабрана радионица."); return; }
+      ensureWorkshopShareModal();
+      const modal = document.getElementById("workshopShareModal");
+      const preview = document.getElementById("workshopSharePreview");
+      modal.style.display = "flex";
+      preview.removeAttribute("src");
+      preview.alt = "Припрема се слика…";
+      try {
+        const result = await createWorkshopShareImage(event);
+        workshopShareCanvas = result.canvas;
+        workshopShareBlob = result.blob;
+        preview.src = URL.createObjectURL(workshopShareBlob);
+        preview.alt = "Слика за објаву: " + event.title;
+        workshopShareUrl = workshopShareLink(event.id);
+        workshopShareFileName = (String(event.title || "radionica").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "radionica") + ".png";
+        workshopShareText = [event.title, "", event.description || "Практична радионица за учење, развој и нове идеје.", "", "📅 " + (fmtDate(event.date) || "Термин у најави") + (event.time ? " у " + event.time : ""), "📍 " + (event.location || "Локација ће бити накнадно објављена"), "💳 Цена: " + Number(event.price || 0).toLocaleString("sr-RS") + " РСД", "", "Више информација и пријава:", workshopShareUrl].join("\n");
+      } catch (err) {
+        console.error(err);
+        alert("Нисмо успели да припремимо слику за ову радионицу. Провери да ли радионица има исправну фотографију и покушај поново.");
+        modal.style.display = "none";
+      }
+    }
+    function openWorkshopFromLink() {
+      const workshopId = new URLSearchParams(window.location.search).get("radionica");
+      if (!workshopId) return;
+      const target = events.find(e => String(e.id) === workshopId);
+      if (target) {
+        setTimeout(() => {
+          openTopic(target.id);
+          document.getElementById("eventGrid")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 250);
+      }
+    }
+    function openTopic(id) { const e = events.find(x => x.id === id); if (!e) return; const defaultContent = categoryGroup(e.category) === "За родитеље" ? "Ova tema otvara prostor za razmišljanje o svakodnevnim porodičnim situacijama, komunikaciji i podršci detetu." : categoryGroup(e.category) === "Креативне радионице" ? "Креативноst počinje posmatranjem, pitanjima i hrabrošću da isprobamo nešto novo. Na radionici ćemo ideje pretvoriti у praktične vežbe." : "Kroz igru, razgovor i stvaralaštvo upoznaćemo temu korak po korak. Svako dete može da učestvuje na svoj način i da istražuje sopstvene ideje."; $("topicCategory").textContent = e.category; $("topicTitle").textContent = e.topicTitle || e.title; $("topicContent").textContent = e.topicContent || defaultContent; if (e.photo) { $("topicPhoto").src = e.photo; $("topicPhoto").classList.remove("hidden") } else { $("topicPhoto").classList.add("hidden") } $("topicFacts").innerHTML = "<strong>Šта ћемо радити?</strong><br>" + esc(e.description || "Upoznaćemo temu kroz razgovor i praktične aktivnosti.") + "<br><strong>Термин:</strong> " + fmtDate(e.date) + " у " + esc(e.time) + " · " + e.duration + " минута<br><strong>Цена:</strong> " + Number(e.price).toLocaleString("sr-RS") + " РСД<br><strong>Локација:</strong> " + esc(e.location || "Локација ће бити накнадно објављена") + ""; $("topicBookBtn").disabled = bookedCount(id) >= e.capacity; $("topicBookBtn").textContent = bookedCount(id) >= e.capacity ? "Попуњено" : "Пријави се na radionicu"; $("topicBookBtn").onclick = () => { $("topicModal").classList.remove("open"); openBooking(id) }; $("topicModal").classList.add("open") }
+    function editPost(id) { const p = posts.find(x => x.id === id); if (!p) return; $("postForm").reset(); $("pId").value = p.id; $("postModalTitle").textContent = "Измени objavu"; $("pTitle").value = p.title; $("pCategory").value = p.category; $("pDate").value = p.date || todayDate(); $("pText").value = p.text; $("pImage").value = ""; $("pRemoveImage").checked = false; if (p.image) { $("pImagePreview").src = p.image; $("pImagePreview").classList.remove("hidden") } else $("pImagePreview").classList.add("hidden"); $("postModal").classList.add("open") }
+    async function deletePost(id) { const p = posts.find(x => x.id === id); if (!p) return; if (!confirm("Обриши објаву „" + p.title + "“ из базе?")) return; try { await requireAdminSession(); const {error}=await supabaseClient.from("site_posts").delete().eq("id",id); if(error) throw error; posts=posts.filter(x=>x.id!==id); render(); } catch(err){ alert("Објава није обрисана: "+(err.message||"грешка")); } }
+    function renderAdmin() {
+      const total = bookings.filter(b => !["Отказано", "Otkazano"].includes(bookingStatus(b))).length, seats = events.reduce((s, e) => s + e.capacity, 0), filled = events.reduce((s, e) => s + bookedCount(e.id), 0);
+      $("stats").innerHTML = `<div class="stat"><span>Aktivne radionice</span><strong>${events.filter(e => e.active).length}</strong></div><div class="stat"><span>Aktivne prijave</span><strong>${total}</strong></div><div class="stat"><span>Попуњеноst ukupno</span><strong>${seats ? Math.round(filled / seats * 100) : 0}%</strong></div>`;
+      $("bookingRows").innerHTML = bookings.length ? bookings.slice().reverse().map(b => `<tr><td>${esc(events.find(e => e.id === b.eventId)?.title || "Обрисана радионица")}</td><td>${esc(b.name)}</td><td>${esc(b.contact)}</td><td><select onchange="setStatus('${b.id}',this.value)">${["Пријава примљена", "Место потврђено", "Листа чекања", "Отказано"].map(s => `<option value="${s}" ${bookingStatus(b) === s ? "selected" : ""}>${s}</option>`).join("")}</select></td><td>${esc(b.created)}</td><td><button class="danger" onclick="removeBooking('${b.id}')">Обриши</button></td></tr>`).join("") : `<tr><td colspan="6">Још нема пријава.</td></tr>`;
+      $("eventRows").innerHTML = events.length ? events.slice().sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time)).map(e => `<tr><td>${esc(e.title)} ${e.photo ? "📷" : ""}</td><td>${fmtDate(e.date)} · ${esc(e.time)}</td><td>${bookedCount(e.id)}/${e.capacity}</td><td><button class="secondary" onclick="editEvent('${e.id}')">Измени</button> <button class="danger" onclick="deleteEvent('${e.id}')">Обриши</button></td></tr>`).join("") : `<tr><td colspan="4">Нема радионица.</td></tr>`;
+    }
+    function editEvent(id) { const e = events.find(x => x.id === id); if (!e) return; $("eventForm").reset(); $("eId").value = e.id; $("eventModalTitle").textContent = "Измени radionicu"; $("eTitle").value = e.title; $("eCategory").value = categoryGroup(e.category); $("eDate").value = e.date; $("eTime").value = e.time; $("eLocation").value = e.location || ""; $("eDuration").value = e.duration; $("ePrice").value = e.price; $("eCapacity").value = e.capacity; $("eMinimum").value = e.minimum; $("eDescription").value = e.description || ""; $("eTopicTitle").value = e.topicTitle || ""; $("eTopicContent").value = e.topicContent || ""; $("ePhoto").value = ""; $("eRemovePhoto").checked = false; if (e.photo) { $("ePhotoPreview").src = e.photo; $("ePhotoPreview").classList.remove("hidden") } else { $("ePhotoPreview").classList.add("hidden") } $("eventModal").classList.add("open") }
+    async function deleteEvent(id) { const e = events.find(x => x.id === id); if (!e) return; if (bookings.some(b => b.eventId === id)) { alert("Ова радионица има пријаве. Да бисмо сачували евиденцију, немојте је брисати; измените термин."); return } if (!confirm("Обриши радионицу „" + e.title + "“ из базе?")) return; try { await requireAdminSession(); const {error}=await supabaseClient.from("workshops").delete().eq("id",id); if(error) throw error; events=events.filter(x=>x.id!==id); render(); } catch(err){ alert("Радионица није обрисана: "+(err.message||"грешка")); } }
+    function readPhoto(file) { return new Promise((resolve, reject) => { if (!file) { resolve(null); return } if (file.size > 700 * 1024) { reject(new Error("Фотографија је већа од 700 КБ. Изаберите мању фотографију или је смањите.")); return } const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = () => reject(new Error("Фотографија није могла да се учита.")); r.readAsDataURL(file) }) }
+    function openBooking(id) { const e = events.find(e => e.id === id); if (!e) return; if (bookedCount(id) >= e.capacity) return alert("Сва места су попуњена."); $("bookingForm").reset(); $("bookingEventId").value = id; $("bookingEventName").textContent = e.title + " · " + fmtDate(e.date) + " у " + e.time + " · " + e.price.toLocaleString("sr-RS") + " РСД"; updateBookingFields(); $("bookingModal").classList.add("open") }
+    async function setStatus(id, status) {
+      try {
+        await requireAdminSession();
+        const { data, error } = await supabaseClient.rpc("admin_update_registration_status", {
+          p_registration_id: id,
+          p_status: databaseBookingStatus(status)
+        });
+        if (error) throw error;
+        if (data === false) throw new Error("Пријава није пронађена.");
+        const b = bookings.find(x => x.id === id); if (b) b.status = status;
+        render();
+      } catch (err) { alert("Статус није сачуван у бази: " + (err.message || "грешка")); await loadRegistrationsFromSupabase(); }
+    }
+    async function removeBooking(id) {
+      if (!confirm("Обрисати ову пријаву из базе? Ова радња се не може опозвати.")) return;
+      try {
+        await requireAdminSession();
+        const { error } = await supabaseClient.rpc("admin_delete_registration", { p_registration_id: id });
+        if (error) throw error;
+        bookings = bookings.filter(b => b.id !== id); render();
+      } catch (err) { alert("Пријава није обрисана: " + (err.message || "грешка")); }
+    }
+    document.querySelectorAll("[data-filter]").forEach(b => b.addEventListener("click", () => { filter = b.dataset.filter; document.querySelectorAll("[data-filter]").forEach(x => x.classList.toggle("active", x === b)); render() }));
+async function showAdminPanel() {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) {
+    $("adminLoginForm").reset();
+    $("adminLoginModal").classList.add("open");
+    return;
+  }
+  const loaded = await loadRegistrationsFromSupabase();
+  if (!loaded) {
+    alert("Pristup nije potvrđen. Proverite da li je ovaj nalog dodat у public.app_admins.");
+    await supabaseClient.auth.signOut();
+    admin = false;
+    $("adminPanel").classList.add("hidden");
+    $("adminToggle").textContent = "Приступ за администратора";
+    return;
+  }
+  admin = true;
+  $("adminToggle").textContent = "Одјави администратора";
+  render();
+}
+$("adminToggle").addEventListener("click", async () => {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (session && admin) {
+    await supabaseClient.auth.signOut();
+    admin = false;
+    bookings = [];
+    $("adminPanel").classList.add("hidden");
+    $("adminToggle").textContent = "Приступ за администратора";
+    render();
+    return;
+  }
+  await showAdminPanel();
+});
+$("cancelAdminLogin").addEventListener("click", () => $("adminLoginModal").classList.remove("open"));
+$("adminLoginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const button = $("adminLoginSubmit");
+  button.disabled = true;
+  button.textContent = "Пријављивање...";
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email: $("adminEmail").value.trim(),
+    password: $("adminPassword").value
+  });
+  button.disabled = false;
+  button.textContent = "Пријави се";
+  if (error) {
+    console.error("Greška pri prijavi administratora:", error);
+    alert("Пријава није успела. Проверите адресу е-поште и лозинку.");
+    return;
+  }
+  $("adminLoginModal").classList.remove("open");
+  await showAdminPanel();
+});
+    $("bookingForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const id = $("bookingEventId").value;
+  const contact = $("personContact").value.trim();
+  const participantAge = $("participantAge").value;
+  const currentEvent = events.find(x => x.id === id);
+  const currentGroup = categoryGroup(currentEvent?.category);
+  const participantName = isChildOrFamilyCategory(currentGroup) ? $("participantName").value.trim() : $("personName").value.trim();
+
+  const { data, error } = await supabaseClient.rpc(
+    "submit_workshop_registration",
+    {
+      p_workshop_id: id,
+      p_parent_name: $("personName").value.trim(),
+      p_contact_phone: contact,
+      p_contact_email: null,
+      p_participant_name: participantName,
+      p_participant_age: isChildOrFamilyCategory(currentGroup) && participantAge ? Number(participantAge) : null,
+      p_note: $("personNote").value.trim(),
+      p_privacy_consent: $("privacyConsent").checked
+    }
+  );
+
+  if (error) {
+    console.error("Грешка при пријави:", error);
+    alert("Пријава није послата. Проверите податке и покушајте поново.");
+    return;
+  }
+
+  $("bookingForm").reset();
+  $("bookingModal").classList.remove("open");
+
+  await loadPublicWorkshopCounts();
+  alert("Пријава је успешно послата!");
+});
+    $("addPostBtn").addEventListener("click", () => { $("postForm").reset(); $("pId").value = ""; $("pDate").value = todayDate(); $("postModalTitle").textContent = "Нова објава"; $("pImagePreview").classList.add("hidden"); $("postModal").classList.add("open") });
+    $("postForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      try {
+        await requireAdminSession();
+        const id=$("pId").value, old=posts.find(x=>x.id===id);
+        let image=old?.image || "";
+        if ($("pRemoveImage").checked) image="";
+        const file=$("pImage").files[0]; if(file) image=await readPhoto(file);
+        const payload={title:$("pTitle").value.trim(), category:$("pCategory").value, publish_date:$("pDate").value, body:$("pText").value.trim(), image_url:image, featured:!!old?.featured};
+        let result;
+        if(id) result=await supabaseClient.from("site_posts").update(payload).eq("id",id).select().single();
+        else result=await supabaseClient.from("site_posts").insert(payload).select().single();
+        if(result.error) throw result.error;
+        const p=result.data, item={id:p.id,title:p.title,category:p.category,date:p.publish_date,text:p.body,image:p.image_url||"",featured:!!p.featured};
+        if(id) posts=posts.map(x=>x.id===id?item:x); else posts.push(item);
+        $("postForm").reset(); $("pId").value=""; $("postModal").classList.remove("open"); render();
+      } catch(err) { alert("Објава није сачувана у бази: "+(err.message||"проверите SQL и администраторска права")); }
+    });
+    $("pImage").addEventListener("change", () => { const f = $("pImage").files[0]; if (!f) { $("pImagePreview").classList.add("hidden"); return } if (f.size > 700 * 1024) { alert("Изаберите фотографију до 700 КБ."); $("pImage").value = ""; return } const r = new FileReader(); r.onload = () => { $("pImagePreview").src = r.result; $("pImagePreview").classList.remove("hidden") }; r.readAsDataURL(f) });
+    $("eventForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const capacity=Number($("eCapacity").value), minimum=Number($("eMinimum").value);
+      if(minimum>capacity) return alert("Минимум не може бити већи од укупног броја места.");
+      try {
+        await requireAdminSession();
+        const id=$("eId").value, old=events.find(x=>x.id===id);
+        let photo=old?.photo||""; if($("eRemovePhoto").checked) photo="";
+        const file=$("ePhoto").files[0]; if(file) photo=await readPhoto(file);
+        const item={title:$("eTitle").value.trim(),category:$("eCategory").value,date:$("eDate").value,time:$("eTime").value,location:$("eLocation").value.trim(),duration:Number($("eDuration").value),price:Number($("ePrice").value),capacity,minimum,description:$("eDescription").value.trim(),topicTitle:$("eTopicTitle").value.trim(),topicContent:$("eTopicContent").value.trim(),photo,active:true};
+        const payload=workshopPayload(item); let result;
+        if(id) result=await supabaseClient.from("workshops").update(payload).eq("id",id).select().single();
+        else result=await supabaseClient.from("workshops").insert(payload).select().single();
+        if(result.error) throw result.error;
+        const w=result.data, event={...item,id:w.id};
+        if(id) events=events.map(x=>x.id===id?event:x); else events.push(event);
+        $("eventForm").reset(); $("eId").value=""; $("eventModalTitle").textContent="Нова радионица"; $("ePhotoPreview").classList.add("hidden"); $("eventModal").classList.remove("open"); render();
+      } catch(err) { alert("Радионица није сачувана у бази: "+(err.message||"проверите SQL и администраторска права")); }
+    });
+    $("addBtn").addEventListener("click", () => { $("eventForm").reset(); $("eId").value = ""; $("eventModalTitle").textContent = "Нова радионица"; $("ePhotoPreview").classList.add("hidden"); $("eventModal").classList.add("open") });
+    $("ePhoto").addEventListener("change", () => { const f = $("ePhoto").files[0]; if (!f) { $("ePhotoPreview").classList.add("hidden"); return } if (f.size > 700 * 1024) { alert("Изаберите фотографију до 700 КБ."); $("ePhoto").value = ""; return } const r = new FileReader(); r.onload = () => { $("ePhotoPreview").src = r.result; $("ePhotoPreview").classList.remove("hidden") }; r.readAsDataURL(f) });
+    document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", () => $(b.dataset.close).classList.remove("open")));
+    ["bookingModal", "eventModal", "postModal", "topicModal", "adminLoginModal"].forEach(id => $(id).addEventListener("click", e => { if (e.target === $(id)) $(id).classList.remove("open") }));
+    $("exportBtn").addEventListener("click", () => { const rows = [["Radionica", "Име и презиме", "Контакт", "Napomena", "Статус пријаве", "Датум пријаве"], ...bookings.map(b => [events.find(e => e.id === b.eventId)?.title || "", b.name, b.contact, b.note, bookingStatus(b), b.created])]; const csv = "\uFEFF" + rows.map(r => r.map(x => '"' + String(x ?? "").replace(/"/g, '""') + '"').join(";")).join("\r\n"); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" })); a.download = "prijave-otvaramo-prozore.csv"; a.click(); URL.revokeObjectURL(a.href) });
+    render();
+    loadWorkshopsFromSupabase();
+    loadPublicWorkshopCounts();
+    loadPostsFromSupabase();
+    loadSiteSettings();
+  </script>
+
+  <script>
+    // Приказуј сав видљиви текст на српској ћирилици, укључујући динамички садржај.
+    (function () {
+      const pairs = [
+        [/DŽ/g, "Џ"], [/Dž/g, "Џ"], [/dž/g, "џ"],
+        [/LJ/g, "Љ"], [/Lj/g, "Љ"], [/lj/g, "љ"],
+        [/NJ/g, "Њ"], [/Nj/g, "Њ"], [/nj/g, "њ"],
+        [/Č/g, "Ч"], [/č/g, "ч"], [/Ć/g, "Ћ"], [/ć/g, "ћ"],
+        [/Đ/g, "Ђ"], [/đ/g, "ђ"], [/Š/g, "Ш"], [/š/g, "ш"],
+        [/Ž/g, "Ж"], [/ž/g, "ж"],
+        [/A/g, "А"], [/B/g, "Б"], [/C/g, "Ц"], [/D/g, "Д"], [/E/g, "Е"],
+        [/F/g, "Ф"], [/G/g, "Г"], [/H/g, "Х"], [/I/g, "И"], [/J/g, "Ј"],
+        [/K/g, "К"], [/L/g, "Л"], [/M/g, "М"], [/N/g, "Н"], [/O/g, "О"],
+        [/P/g, "П"], [/Q/g, "К"], [/R/g, "Р"], [/S/g, "С"], [/T/g, "Т"],
+        [/U/g, "У"], [/V/g, "В"], [/W/g, "В"], [/X/g, "КС"], [/Y/g, "Ј"], [/Z/g, "З"],
+        [/a/g, "а"], [/b/g, "б"], [/c/g, "ц"], [/d/g, "д"], [/e/g, "е"],
+        [/f/g, "ф"], [/g/g, "г"], [/h/g, "х"], [/i/g, "и"], [/j/g, "ј"],
+        [/k/g, "к"], [/l/g, "л"], [/m/g, "м"], [/n/g, "н"], [/o/g, "о"],
+        [/p/g, "п"], [/q/g, "к"], [/r/g, "р"], [/s/g, "с"], [/t/g, "т"],
+        [/u/g, "у"], [/v/g, "в"], [/w/g, "в"], [/x/g, "кс"], [/y/g, "ј"], [/z/g, "з"]
+      ];
+      function toCyrillic(value) {
+        if (!value || /https?:\/\/|www\.|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/i.test(value)) return value;
+        // Sačuvaj poznate skraćenice i tehničke oznake koje nisu običan tekst.
+        const protectedTokens = [];
+        let result = String(value).replace(/\b(?:HTML|CSS|JavaScript|Supabase|CSV|PNG|JPG|WebP|RSD|FAQ)\b/g, token => {
+          protectedTokens.push(token); return `\u0000${protectedTokens.length - 1}\u0000`;
+        });
+        for (const [pattern, replacement] of pairs) result = result.replace(pattern, replacement);
+        result = result.replace(/\u0000(\d+)\u0000/g, (_, index) => protectedTokens[Number(index)]);
+        return result;
+      }
+      function convertNode(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          if (node.parentElement && /^(SCRIPT|STYLE|TEXTAREA|CODE|PRE)$/i.test(node.parentElement.tagName)) return;
+          const next = toCyrillic(node.nodeValue);
+          if (next !== node.nodeValue) node.nodeValue = next;
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          if (/^(SCRIPT|STYLE|TEXTAREA|CODE|PRE)$/i.test(node.tagName)) return;
+          for (const attr of ['placeholder', 'title', 'aria-label', 'alt']) {
+            if (node.hasAttribute(attr)) {
+              const oldValue = node.getAttribute(attr), nextValue = toCyrillic(oldValue);
+              if (oldValue !== nextValue) node.setAttribute(attr, nextValue);
+            }
+          }
+          for (const child of Array.from(node.childNodes)) convertNode(child);
+        }
+      }
+      function convertPage() { convertNode(document.body); }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', convertPage, { once: true });
+      else convertPage();
+      const observer = new MutationObserver(records => {
+        for (const record of records) {
+          if (record.type === 'characterData') convertNode(record.target);
+          for (const node of record.addedNodes || []) convertNode(node);
+        }
+      });
+      observer.observe(document.documentElement, { subtree: true, childList: true, characterData: true });
+      const title = document.querySelector('title');
+      if (title) title.textContent = toCyrillic(title.textContent);
+    })();
+  </script>
+
+</body>
+
+</html>
