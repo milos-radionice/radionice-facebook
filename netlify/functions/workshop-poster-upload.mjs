@@ -49,7 +49,7 @@ export default async (request) => {
     if (!uploadResponse.ok) {
       const detail = await uploadResponse.text();
       console.error("Storage upload failed:", uploadResponse.status, detail);
-      return new Response("Чување постера у Supabase Storage-у није успело.", { status: 502 });
+      return new Response(`Чување постера није успело (HTTP ${uploadResponse.status}).`, { status: 502 });
     }
     return Response.json({ ok: true, path: `${id}.png` });
   } catch (error) {
