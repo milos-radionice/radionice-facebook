@@ -1766,6 +1766,24 @@
         preview.src = URL.createObjectURL(workshopShareBlob);
         preview.alt = "Слика за објаву: " + event.title;
         workshopShareUrl = workshopShareLink(event.id);
+        // Сачувај готов постер у јавни Supabase Storage да би га Facebook crawler могао преузети.
+        try {
+          const { data: sessionData } = await supabaseClient.auth.getSession();
+          const accessToken = sessionData?.session?.access_token;
+          if (!accessToken) throw new Error("Пријави се као администратор да би се постер сачувао за Facebook.");
+          const uploadResponse = await fetch("/.netlify/functions/workshop-poster-upload?id=" + encodeURIComponent(event.id), {
+            method: "POST",
+            headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "image/png" },
+            body: workshopShareBlob
+          });
+          if (!uploadResponse.ok) {
+            const message = await uploadResponse.text();
+            throw new Error(message || "Чување постера није успело.");
+          }
+        } catch (uploadError) {
+          console.error("Постер није сачуван за Facebook:", uploadError);
+          alert("Постер је направљен, али није сачуван за Facebook. Провери да ли си пријављен као администратор и да ли је у Netlify-у подешен SUPABASE_SERVICE_ROLE_KEY.");
+        }
         workshopShareFileName = (String(event.title || "radionica").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "radionica") + ".png";
         workshopShareText = [event.title, "", event.description || "Практична радионица за учење, развој и нове идеје.", "", "📅 " + (fmtDate(event.date) || "Термин у најави") + (event.time ? " у " + event.time : ""), "📍 " + (event.location || "Локација ће бити накнадно објављена"), "💳 Цена: " + Number(event.price || 0).toLocaleString("sr-RS") + " РСД", "", "Више информација и пријава:", workshopShareUrl].join("\n");
       } catch (err) {
