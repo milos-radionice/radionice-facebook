@@ -1715,27 +1715,31 @@
         <p style="margin:0 0 14px;color:#687872">Шаблон аутоматски користи податке радионице коју си изабрао.</p>
         <img id="workshopSharePreview" alt="Преглед слике за објаву" style="display:block;width:min(100%,420px);max-height:48vh;object-fit:contain;margin:0 auto 16px;border-radius:10px;background:#e3ece4">
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">
-          <button type="button" id="workshopShareNative">Покушај директно дељење</button>
-          <button type="button" id="workshopShareDownload" class="secondary">Преузми слику</button>
-          <button type="button" id="workshopShareCopy" class="secondary">Копирај текст и линк</button>
-          <button type="button" id="workshopShareFacebook" class="secondary">Отвори Фејсбук</button>
+          <button type="button" id="workshopShareNative">Подели на Фејсбуку</button>
+          <button type="button" id="workshopShareDownload" class="secondary">Преузми постер</button>
         </div>
-        <p style="font-size:13px;color:#687872;line-height:1.5;margin:14px 0 0">За аутоматски преглед на Фејсбуку налепи линк из „Копирај текст и линк“ — Фејсбук ће сам преузети слику, наслов и опис радионице. Ако желиш, можеш додатно преузети PNG и приложити га ручно.</p>
+        <p style="font-size:13px;color:#687872;line-height:1.5;margin:14px 0 0">Дугме „Подели на Фејсбуку“ преузима готов постер, копира текст са линком за пријаву и отвара нову објаву на Фејсбуку. Тамо налепи текст и приложи преузету PNG слику. Ако се појави додатни преглед линка, уклони само тај преглед (X), а линк остави у тексту. Веб-прегледач не дозвољава да апликација сама приложи слику у Фејсбуку.</p>
       </div>`;
       document.body.appendChild(modal);
       modal.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
       document.getElementById("workshopShareClose").onclick = () => modal.style.display = "none";
       document.getElementById("workshopShareNative").onclick = async () => {
         if (!workshopShareBlob) return;
+        // Open Facebook synchronously so the browser does not block the tab.
+        window.open("https://www.facebook.com/post/create", "_blank", "noopener");
+        const a = document.createElement("a");
+        const objectUrl = URL.createObjectURL(workshopShareBlob);
+        a.href = objectUrl;
+        a.download = workshopShareFileName;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(objectUrl), 5000);
         try {
-          const file = new File([workshopShareBlob], workshopShareFileName, { type: "image/png" });
-          if (!navigator.share || !navigator.canShare || !navigator.canShare({ files: [file] })) {
-            alert("Овај прегледач не подржава директно дељење слике. Користи дугмад за преузимање слике и копирање текста.");
-            return;
-          }
-          await navigator.share({ files: [file], title: "Радионица", text: workshopShareText.replace(/\n*Више информација и пријава:\nhttps?:\/\/\S+/i, "").trim() });
+          await navigator.clipboard.writeText(workshopShareText);
+          alert("Постер је преузет, цео текст са линком за пријаву је копиран, а Фејсбук је отворен. Налепи текст и приложи преузету PNG слику. Ако Фејсбук направи додатни преглед линка, уклони само тај преглед (X), а линк остави у тексту.");
         } catch (err) {
-          if (err && err.name !== "AbortError") alert("Директно дељење није успело. Преузми слику и копирај текст као резервну опцију.");
+          prompt("Постер је преузет и Фејсбук је отворен. Копирај цео текст са линком за пријаву, па приложи PNG слику:", workshopShareText);
         }
       };
       document.getElementById("workshopShareDownload").onclick = () => {
@@ -1743,11 +1747,6 @@
         const a = document.createElement("a"); a.href = URL.createObjectURL(workshopShareBlob); a.download = workshopShareFileName; document.body.appendChild(a); a.click(); a.remove();
         setTimeout(() => URL.revokeObjectURL(a.href), 1500);
       };
-      document.getElementById("workshopShareCopy").onclick = async () => {
-        try { await navigator.clipboard.writeText(workshopShareText); alert("Текст и линк су копирани. Налепи их у Фејсбук објаву."); }
-        catch (e) { prompt("Копирај текст и линк испод:", workshopShareText); }
-      };
-      document.getElementById("workshopShareFacebook").onclick = () => window.open("https://www.facebook.com/", "_blank", "noopener");
     }
 
     async function openWorkshopShare(id) {
