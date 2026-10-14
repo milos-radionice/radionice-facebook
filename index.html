@@ -11,16 +11,16 @@
   <meta property="og:site_name" content="Отварамо прозоре">
   <meta property="og:title" content="Отварамо прозоре — радионице и тематски садржаји">
   <meta property="og:description" content="Радионице за децу, родитеље и одрасле — простор за учење, стварање и лични развој.">
-  <meta property="og:url" content="https://licni-razvoj.netlify.app/">
-  <meta property="og:image" content="https://licni-razvoj.netlify.app/og-cover.png">
-  <meta property="og:image:secure_url" content="https://licni-razvoj.netlify.app/og-cover.png">
+  <meta property="og:url" content="https://radionice-facebook.pages.dev/">
+  <meta property="og:image" content="https://radionice-facebook.pages.dev/og-cover.png">
+  <meta property="og:image:secure_url" content="https://radionice-facebook.pages.dev/og-cover.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Отварамо прозоре — радионице и тематски садржаји">
   <meta name="twitter:description" content="Радионице за децу, родитеље и одрасле — простор за учење, стварање и лични развој.">
-  <meta name="twitter:image" content="https://licni-razvoj.netlify.app/og-cover.png">
+  <meta name="twitter:image" content="https://radionice-facebook.pages.dev/og-cover.png">
   <style>
     :root {
       --green: #24584d;
@@ -1601,10 +1601,20 @@
     let workshopShareUrl = "";
     let workshopShareFileName = "radionica.png";
 
-    function workshopShareLink(id) {
-      // Facebook crawler reads this server-rendered URL, while visitors are
-      // redirected by the Netlify Function to the selected workshop in the app.
-      return window.location.origin + "/.netlify/functions/workshop-share?id=" + encodeURIComponent(id);
+    const WORKSHOP_SHARE_SETTINGS_KEY = "op_workshop_share_settings_v1";
+    const WORKSHOP_SHARE_GLOBAL_KEY = "op_workshop_share_global_v1";
+    function readShareSettings(key, fallback = {}) {
+      try { return JSON.parse(localStorage.getItem(key) || "null") || fallback; }
+      catch (e) { return fallback; }
+    }
+    function workshopShareLink(id, settings) {
+      // Link carries the selected public image and text; no poster is uploaded or stored.
+      const url = new URL(window.location.origin + "/share");
+      url.searchParams.set("id", String(id));
+      if (settings?.title) url.searchParams.set("share_title", settings.title);
+      if (settings?.description) url.searchParams.set("share_description", settings.description);
+      if (settings?.imageUrl && /^https?:\/\//i.test(settings.imageUrl)) url.searchParams.set("share_image", settings.imageUrl);
+      return url.toString();
     }
 
     function wrapCanvasText(ctx, text, maxWidth, maxLines) {
@@ -1712,7 +1722,18 @@
       modal.style.cssText = "position:fixed;inset:0;z-index:10050;background:rgba(12,30,26,.78);display:none;align-items:center;justify-content:center;padding:18px;overflow:auto";
       modal.innerHTML = `<div style="background:#fffdf7;color:#243630;width:min(100%,760px);max-height:94vh;overflow:auto;border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px"><h2 style="margin:0;font-size:22px">Припремљена објава за радионицу</h2><button type="button" id="workshopShareClose" class="secondary" style="width:auto;margin:0;padding:8px 12px">Затвори ✕</button></div>
-        <p style="margin:0 0 14px;color:#687872">Шаблон аутоматски користи податке радионице коју си изабрао.</p>
+        <p style="margin:0 0 14px;color:#687872">Овде можеш да прилагодиш текст и слику која се приказује када се линк подели. Слика мора већ бити јавно доступна на интернету; апликација је не отпрема у Supabase.</p>
+        <div style="display:grid;gap:8px;margin-bottom:14px">
+          <label for="workshopShareTitle">Наслов за дељење</label><input id="workshopShareTitle" type="text" maxlength="180" style="width:100%;padding:10px;border:1px solid #ccd5ce;border-radius:8px">
+          <label for="workshopShareDescription">Промотивни текст</label><textarea id="workshopShareDescription" rows="3" maxlength="500" style="width:100%;padding:10px;border:1px solid #ccd5ce;border-radius:8px"></textarea>
+          <label for="workshopShareImageUrl">Јавни линк до насловне слике (опционо)</label><input id="workshopShareImageUrl" type="url" placeholder="https://.../slika.jpg" style="width:100%;padding:10px;border:1px solid #ccd5ce;border-radius:8px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">
+            <button type="button" id="workshopShareSaveOne" class="secondary">Сачувај за ову радионицу</button>
+            <button type="button" id="workshopShareSaveGlobal" class="secondary">Сачувај као заједничко</button>
+            <button type="button" id="workshopShareUseGlobal" class="secondary">Примени заједничко</button>
+          </div>
+          <p style="font-size:12px;color:#687872;margin:0">Подешавања се чувају у овом прегледачу. За Facebook слику користи јавни директан линк до слике.</p>
+        </div>
         <img id="workshopSharePreview" alt="Преглед слике за објаву" style="display:block;width:min(100%,420px);max-height:48vh;object-fit:contain;margin:0 auto 16px;border-radius:10px;background:#e3ece4">
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">
           <button type="button" id="workshopShareDownload" class="secondary">Преузми комплетан постер</button>
@@ -1723,6 +1744,9 @@
       document.body.appendChild(modal);
       modal.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
       document.getElementById("workshopShareClose").onclick = () => modal.style.display = "none";
+      document.getElementById("workshopShareSaveOne").onclick = () => saveWorkshopShareSettings(false);
+      document.getElementById("workshopShareSaveGlobal").onclick = () => saveWorkshopShareSettings(true);
+      document.getElementById("workshopShareUseGlobal").onclick = () => applyGlobalWorkshopShareSettings();
       document.getElementById("workshopShareDownload").onclick = () => {
         if (!workshopShareBlob) return;
         const a = document.createElement("a"); a.href = URL.createObjectURL(workshopShareBlob); a.download = workshopShareFileName; document.body.appendChild(a); a.click(); a.remove();
@@ -1734,42 +1758,67 @@
       };
     }
 
+    let activeWorkshopShareEvent = null;
+    function currentWorkshopShareSettings() {
+      return {
+        title: document.getElementById("workshopShareTitle")?.value.trim() || "",
+        description: document.getElementById("workshopShareDescription")?.value.trim() || "",
+        imageUrl: document.getElementById("workshopShareImageUrl")?.value.trim() || ""
+      };
+    }
+    function saveWorkshopShareSettings(global) {
+      if (!activeWorkshopShareEvent) return;
+      const settings = currentWorkshopShareSettings();
+      if (settings.imageUrl && !/^https?:\/\//i.test(settings.imageUrl)) {
+        alert("Линк до слике мора да почиње са https:// или http://."); return;
+      }
+      if (global) localStorage.setItem(WORKSHOP_SHARE_GLOBAL_KEY, JSON.stringify(settings));
+      else {
+        const all = readShareSettings(WORKSHOP_SHARE_SETTINGS_KEY, {});
+        all[String(activeWorkshopShareEvent.id)] = settings;
+        localStorage.setItem(WORKSHOP_SHARE_SETTINGS_KEY, JSON.stringify(all));
+      }
+      alert(global ? "Заједничка подешавања су сачувана у овом прегледачу." : "Подешавања за ову радионицу су сачувана у овом прегледачу.");
+      refreshWorkshopSharePreview();
+    }
+    function applyGlobalWorkshopShareSettings() {
+      const settings = readShareSettings(WORKSHOP_SHARE_GLOBAL_KEY, null);
+      if (!settings) { alert("Заједничка подешавања још нису сачувана."); return; }
+      document.getElementById("workshopShareTitle").value = settings.title || "";
+      document.getElementById("workshopShareDescription").value = settings.description || "";
+      document.getElementById("workshopShareImageUrl").value = settings.imageUrl || "";
+      refreshWorkshopSharePreview();
+    }
+    async function refreshWorkshopSharePreview() {
+      if (!activeWorkshopShareEvent) return;
+      const settings = currentWorkshopShareSettings();
+      const eventForPoster = { ...activeWorkshopShareEvent, title: settings.title || activeWorkshopShareEvent.title, description: settings.description || activeWorkshopShareEvent.description, photo: settings.imageUrl || activeWorkshopShareEvent.photo };
+      try {
+        const result = await createWorkshopShareImage(eventForPoster);
+        workshopShareCanvas = result.canvas; workshopShareBlob = result.blob;
+        const preview = document.getElementById("workshopSharePreview");
+        if (preview) preview.src = URL.createObjectURL(workshopShareBlob);
+        workshopShareUrl = workshopShareLink(activeWorkshopShareEvent.id, settings);
+        workshopShareFileName = (String(eventForPoster.title || "radionica").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "radionica") + ".png";
+        workshopShareText = [eventForPoster.title, "", eventForPoster.description || "Практична радионица за учење, развој и нове идеје.", "", "📅 " + (fmtDate(eventForPoster.date) || "Термин у најави") + (eventForPoster.time ? " у " + eventForPoster.time.replace(/:(\d{2})$/, ".$1") : ""), "📍 " + (eventForPoster.location || "Локација ће бити накнадно објављена"), "💳 Цена: " + Number(eventForPoster.price || 0).toLocaleString("sr-RS") + " РСД по учеснику", "📞 Информације и пријаве: 064/418-8987", "Слободно нас позовите ако желите додатне информације о радионици и начину пријаве.", "🔗 Пријава на радионицу:", workshopShareUrl].join("\n");
+      } catch (err) { console.error(err); }
+    }
+
     async function openWorkshopShare(id) {
       const event = events.find(e => String(e.id) === String(id));
       if (!event) { alert("Није пронађена изабрана радионица."); return; }
       ensureWorkshopShareModal();
       const modal = document.getElementById("workshopShareModal");
-      const preview = document.getElementById("workshopSharePreview");
+      activeWorkshopShareEvent = event;
       modal.style.display = "flex";
-      preview.removeAttribute("src");
-      preview.alt = "Припрема се слика…";
+      const one = readShareSettings(WORKSHOP_SHARE_SETTINGS_KEY, {})[String(event.id)];
+      const global = readShareSettings(WORKSHOP_SHARE_GLOBAL_KEY, null);
+      const settings = one || global || {};
+      document.getElementById("workshopShareTitle").value = settings.title || event.title || "";
+      document.getElementById("workshopShareDescription").value = settings.description || event.description || "";
+      document.getElementById("workshopShareImageUrl").value = settings.imageUrl || "";
       try {
-        const result = await createWorkshopShareImage(event);
-        workshopShareCanvas = result.canvas;
-        workshopShareBlob = result.blob;
-        preview.src = URL.createObjectURL(workshopShareBlob);
-        preview.alt = "Слика за објаву: " + event.title;
-        workshopShareUrl = workshopShareLink(event.id);
-        // Сачувај готов постер у јавни Supabase Storage да би га Facebook crawler могао преузети.
-        try {
-          const { data: sessionData } = await supabaseClient.auth.getSession();
-          const accessToken = sessionData?.session?.access_token;
-          if (!accessToken) throw new Error("Пријави се као администратор да би се постер сачувао за Facebook.");
-          const uploadResponse = await fetch("/.netlify/functions/workshop-poster-upload?id=" + encodeURIComponent(event.id), {
-            method: "POST",
-            headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "image/png" },
-            body: workshopShareBlob
-          });
-          if (!uploadResponse.ok) {
-            const message = await uploadResponse.text();
-            throw new Error(message || "Чување постера није успело.");
-          }
-        } catch (uploadError) {
-          console.error("Постер није сачуван за Facebook:", uploadError);
-          alert("Постер је направљен, али није сачуван за Facebook. Провери да ли си пријављен као администратор и да ли је у Netlify-у подешен SUPABASE_SERVICE_ROLE_KEY.");
-        }
-        workshopShareFileName = (String(event.title || "radionica").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "radionica") + ".png";
-        workshopShareText = [event.title, "", event.description || "Практична радионица за учење, развој и нове идеје.", "", "📅 " + (fmtDate(event.date) || "Термин у најави") + (event.time ? " у " + event.time.replace(/:(\d{2})$/, ".$1") : ""), "📍 " + (event.location || "Локација ће бити накнадно објављена"), "💳 Цена: " + Number(event.price || 0).toLocaleString("sr-RS") + " РСД по учеснику", "📞 Информације и пријаве: 064/418-8987", "Слободно нас позовите ако желите додатне информације о радионици и начину пријаве.", "🔗 Пријава на радионицу:", workshopShareUrl].join("\n");
+        await refreshWorkshopSharePreview();
       } catch (err) {
         console.error(err);
         alert("Нисмо успели да припремимо слику за ову радионицу. Провери да ли радионица има исправну фотографију и покушај поново.");
