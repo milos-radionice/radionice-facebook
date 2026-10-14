@@ -1601,22 +1601,33 @@
     let workshopShareUrl = "";
     let workshopShareFileName = "radionica.png";
 
-    const WORKSHOP_SHARE_SETTINGS_KEY = "op_workshop_share_settings_v1";
-    const WORKSHOP_SHARE_GLOBAL_KEY = "op_workshop_share_global_v1";
-    function readShareSettings(key, fallback = {}) {
-      try { return JSON.parse(localStorage.getItem(key) || "null") || fallback; }
-      catch (e) { return fallback; }
-    }
     function workshopShareLink(id, settings) {
-      // Link carries the selected public image and text; no poster is uploaded or stored.
+      // Link asks the Cloudflare Function for current Open Graph metadata.
       const url = new URL(window.location.origin + "/share");
       url.searchParams.set("id", String(id));
       if (settings?.title) url.searchParams.set("share_title", settings.title);
       if (settings?.description) url.searchParams.set("share_description", settings.description);
-      if (settings?.imageUrl && /^https?:\/\//i.test(settings.imageUrl)) url.searchParams.set("share_image", settings.imageUrl);
+      if (activeShareUseGlobalOnly) url.searchParams.set("use_global", "1");
+      url.searchParams.set("v", String(settings?.updatedAt || Date.now()));
       return url.toString();
     }
 
+    async function fetchShareConfig(scope, id) {
+      const params = new URLSearchParams({ scope });
+      if (id) params.set("id", String(id));
+      const response = await fetch(`/api/share-settings?${params.toString()}`, { cache: "no-store" });
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body.error || "Подешавања за Facebook нису доступна.");
+      }
+      const data = await response.json();
+      return data.config || null;
+    }
+
+    function shareImageUrl(imageKey, version) {
+      if (!imageKey) return "/og-cover.png";
+      return `/share-image?key=${encodeURIComponent(imageKey)}&v=${encodeURIComponent(version || Date.now())}`;
+    }
     function wrapCanvasText(ctx, text, maxWidth, maxLines) {
       const words = String(text || "").trim().split(/\s+/).filter(Boolean);
       const lines = [];
@@ -1720,26 +1731,31 @@
       const modal = document.createElement("div");
       modal.id = "workshopShareModal";
       modal.style.cssText = "position:fixed;inset:0;z-index:10050;background:rgba(12,30,26,.78);display:none;align-items:center;justify-content:center;padding:18px;overflow:auto";
-      modal.innerHTML = `<div style="background:#fffdf7;color:#243630;width:min(100%,760px);max-height:94vh;overflow:auto;border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px"><h2 style="margin:0;font-size:22px">Припремљена објава за радионицу</h2><button type="button" id="workshopShareClose" class="secondary" style="width:auto;margin:0;padding:8px 12px">Затвори ✕</button></div>
-        <p style="margin:0 0 14px;color:#687872">Овде можеш да прилагодиш текст и слику која се приказује када се линк подели. Слика мора већ бити јавно доступна на интернету; апликација је не отпрема у Supabase.</p>
+      modal.innerHTML = `<div style="background:#fffdf7;color:#243630;width:min(100%,820px);max-height:94vh;overflow:auto;border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px"><h2 style="margin:0;font-size:22px">Подешавање Facebook прегледа</h2><button type="button" id="workshopShareClose" class="secondary" style="width:auto;margin:0;padding:8px 12px">Затвори ✕</button></div>
+        <p style="margin:0 0 14px;color:#687872">Овде мењаш слику, наслов и поруку које Facebook приказује уз линк. Подешавања се чувају у бесплатном Cloudflare Workers KV простору и важе са свих уређаја. Постери за ручно објављивање не отпремају се аутоматски.</p>
         <div style="display:grid;gap:8px;margin-bottom:14px">
-          <label for="workshopShareTitle">Наслов за дељење</label><input id="workshopShareTitle" type="text" maxlength="180" style="width:100%;padding:10px;border:1px solid #ccd5ce;border-radius:8px">
-          <label for="workshopShareDescription">Промотивни текст</label><textarea id="workshopShareDescription" rows="3" maxlength="500" style="width:100%;padding:10px;border:1px solid #ccd5ce;border-radius:8px"></textarea>
-          <label for="workshopShareImageUrl">Јавни линк до насловне слике (опционо)</label><input id="workshopShareImageUrl" type="url" placeholder="https://.../slika.jpg" style="width:100%;padding:10px;border:1px solid #ccd5ce;border-radius:8px">
+          <label for="workshopShareTitle">Наслов који се приказује уз линк</label><input id="workshopShareTitle" type="text" maxlength="180" style="width:100%;padding:10px;border:1px solid #ccd5ce;border-radius:8px">
+          <label for="workshopShareDescription">Кратка промотивна порука</label><textarea id="workshopShareDescription" rows="3" maxlength="500" style="width:100%;padding:10px;border:1px solid #ccd5ce;border-radius:8px"></textarea>
+          <label for="workshopShareImageFile">Насловна слика за Facebook</label><input id="workshopShareImageFile" type="file" accept="image/jpeg,image/png,image/webp" style="width:100%;padding:10px;border:1px solid #ccd5ce;border-radius:8px;background:#fff">
+          <p style="font-size:12px;color:#687872;margin:0">Изабери JPG, PNG или WebP до 3 MB. Слика се отпрема тек када притиснеш једно од дугмади за чување.</p>
+          <img id="workshopShareCoverPreview" alt="Преглед насловне слике за Facebook линк" style="display:block;width:min(100%,520px);max-height:280px;object-fit:contain;margin:4px auto 10px;border-radius:10px;background:#e3ece4">
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">
             <button type="button" id="workshopShareSaveOne" class="secondary">Сачувај за ову радионицу</button>
             <button type="button" id="workshopShareSaveGlobal" class="secondary">Сачувај као заједничко</button>
-            <button type="button" id="workshopShareUseGlobal" class="secondary">Примени заједничко</button>
+            <button type="button" id="workshopShareUseGlobal" class="secondary">Учитај заједничка подешавања</button>
           </div>
-          <p style="font-size:12px;color:#687872;margin:0">Подешавања се чувају у овом прегледачу. За Facebook слику користи јавни директан линк до слике.</p>
+          <p id="workshopShareSaveStatus" role="status" style="font-size:12px;color:#24584d;margin:0"></p>
         </div>
-        <img id="workshopSharePreview" alt="Преглед слике за објаву" style="display:block;width:min(100%,420px);max-height:48vh;object-fit:contain;margin:0 auto 16px;border-radius:10px;background:#e3ece4">
+        <hr style="border:0;border-top:1px solid #dce5dc;margin:18px 0">
+        <h3 style="margin:0 0 6px;font-size:18px">Постер за ручно додавање у Facebook објаву</h3>
+        <p style="margin:0 0 10px;color:#687872;font-size:13px">Ово је посебан постер за преузимање. Не отпрема се аутоматски уз линк.</p>
+        <img id="workshopSharePreview" alt="Преглед комплетног постера за радионицу" style="display:block;width:min(100%,420px);max-height:44vh;object-fit:contain;margin:0 auto 16px;border-radius:10px;background:#e3ece4">
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">
           <button type="button" id="workshopShareDownload" class="secondary">Преузми комплетан постер</button>
-          <button type="button" id="workshopShareCopy" class="secondary">Копирај текст и линк за пријаву</button>
+          <button type="button" id="workshopShareCopy" class="secondary">Копирај текст и линк ове радионице</button>
+          <button type="button" id="workshopShareCopyGlobalLink" class="secondary">Копирај заједнички линк ка сајту</button>
         </div>
-        <p style="font-size:13px;color:#687872;line-height:1.5;margin:14px 0 0">Препоручени поступак: копирај текст са линком за пријаву, налепи га у нову објаву на Фејсбуку, уклони само аутоматски преглед линка ако се појави, па приложи преузети комплетан постер као слику. Линк у тексту остави — он води на пријаву.</p>
       </div>`;
       document.body.appendChild(modal);
       modal.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
@@ -1747,52 +1763,138 @@
       document.getElementById("workshopShareSaveOne").onclick = () => saveWorkshopShareSettings(false);
       document.getElementById("workshopShareSaveGlobal").onclick = () => saveWorkshopShareSettings(true);
       document.getElementById("workshopShareUseGlobal").onclick = () => applyGlobalWorkshopShareSettings();
+      document.getElementById("workshopShareImageFile").addEventListener("change", e => {
+        const file = e.target.files?.[0] || null;
+        workshopShareImageFile = null;
+        if (workshopSharePreviewObjectUrl) { URL.revokeObjectURL(workshopSharePreviewObjectUrl); workshopSharePreviewObjectUrl = null; }
+        if (!file) { refreshShareCoverPreview(); return; }
+        if (!/^image\/(jpeg|png|webp)$/.test(file.type) || file.size > 3 * 1024 * 1024) {
+          alert("Изабери JPG, PNG или WebP слику величине до 3 MB."); e.target.value = ""; refreshShareCoverPreview(); return;
+        }
+        workshopShareImageFile = file;
+        workshopSharePreviewObjectUrl = URL.createObjectURL(file);
+        const cover = document.getElementById("workshopShareCoverPreview");
+        if (cover) cover.src = workshopSharePreviewObjectUrl;
+        document.getElementById("workshopShareSaveStatus").textContent = "Нова слика је изабрана. Притисни дугме за чување да би постала доступна Facebook-у.";
+      });
       document.getElementById("workshopShareDownload").onclick = () => {
         if (!workshopShareBlob) return;
         const a = document.createElement("a"); a.href = URL.createObjectURL(workshopShareBlob); a.download = workshopShareFileName; document.body.appendChild(a); a.click(); a.remove();
         setTimeout(() => URL.revokeObjectURL(a.href), 1500);
       };
       document.getElementById("workshopShareCopy").onclick = async () => {
+        if (workshopShareImageFile) { alert("Прво сачувај изабрану слику за ову радионицу или заједнички, па онда копирај линк."); return; }
         try { await navigator.clipboard.writeText(workshopShareText); alert("Текст и линк су копирани. Налепи их у Фејсбук објаву."); }
         catch (e) { prompt("Копирај текст и линк испод:", workshopShareText); }
+      };
+      document.getElementById("workshopShareCopyGlobalLink").onclick = async () => {
+        try {
+          const global = await fetchShareConfig("global");
+          const link = new URL(window.location.origin + "/share");
+          if (global?.title) link.searchParams.set("share_title", global.title);
+          if (global?.description) link.searchParams.set("share_description", global.description);
+          link.searchParams.set("v", String(global?.updatedAt || Date.now()));
+          await navigator.clipboard.writeText(link.toString());
+          alert("Заједнички линк је копиран. Клик на њега води на страницу са актуелним радионицама.");
+        } catch (err) { alert("Не могу да прочитам заједничка подешавања. Прво их сачувај у Cloudflare-у."); }
       };
     }
 
     let activeWorkshopShareEvent = null;
+    let activeWorkshopSpecificSettings = null;
+    let activeGlobalShareSettings = null;
+    let activeEffectiveShareSettings = {};
+    let workshopShareImageFile = null;
+    let workshopSharePreviewObjectUrl = null;
+    let activeShareUseGlobalOnly = false;
+
     function currentWorkshopShareSettings() {
       return {
         title: document.getElementById("workshopShareTitle")?.value.trim() || "",
         description: document.getElementById("workshopShareDescription")?.value.trim() || "",
-        imageUrl: document.getElementById("workshopShareImageUrl")?.value.trim() || ""
+        imageKey: activeEffectiveShareSettings?.imageKey || "",
+        updatedAt: activeEffectiveShareSettings?.updatedAt || Date.now()
       };
     }
-    function saveWorkshopShareSettings(global) {
+
+    function refreshShareCoverPreview() {
+      const cover = document.getElementById("workshopShareCoverPreview");
+      if (!cover) return;
+      if (workshopSharePreviewObjectUrl) { cover.src = workshopSharePreviewObjectUrl; return; }
+      const config = activeEffectiveShareSettings || {};
+      cover.src = shareImageUrl(config.imageKey, config.updatedAt);
+      cover.onerror = () => { cover.onerror = null; cover.src = "/og-cover.png"; };
+    }
+
+    async function saveWorkshopShareSettings(global) {
       if (!activeWorkshopShareEvent) return;
-      const settings = currentWorkshopShareSettings();
-      if (settings.imageUrl && !/^https?:\/\//i.test(settings.imageUrl)) {
-        alert("Линк до слике мора да почиње са https:// или http://."); return;
+      const title = document.getElementById("workshopShareTitle")?.value.trim() || "";
+      const description = document.getElementById("workshopShareDescription")?.value.trim() || "";
+      const status = document.getElementById("workshopShareSaveStatus");
+      const btn = document.getElementById(global ? "workshopShareSaveGlobal" : "workshopShareSaveOne");
+      try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (!session) throw new Error("Прво се пријави у администрацију.");
+        await requireAdminSession();
+        const form = new FormData();
+        form.set("scope", global ? "global" : "workshop");
+        form.set("title", title);
+        form.set("description", description);
+        if (!global) form.set("id", String(activeWorkshopShareEvent.id));
+        if (workshopShareImageFile) form.set("image", workshopShareImageFile, workshopShareImageFile.name);
+        if (btn) { btn.disabled = true; btn.dataset.originalText = btn.textContent; btn.textContent = "Чување…"; }
+        if (status) status.textContent = "Чувам подешавања на Cloudflare-у…";
+        const response = await fetch("/api/share-settings", {
+          method: "POST",
+          headers: { "Authorization": `Bearer ${session.access_token}` },
+          body: form
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || "Подешавања нису сачувана.");
+        const saved = result.config || {};
+        if (global) activeGlobalShareSettings = saved;
+        else { activeWorkshopSpecificSettings = saved; activeShareUseGlobalOnly = false; }
+        activeEffectiveShareSettings = { ...(activeGlobalShareSettings || {}), ...(activeWorkshopSpecificSettings || {}) };
+        if (!activeWorkshopSpecificSettings?.imageKey && activeGlobalShareSettings?.imageKey) activeEffectiveShareSettings.imageKey = activeGlobalShareSettings.imageKey;
+        activeEffectiveShareSettings.updatedAt = Math.max(Number(activeGlobalShareSettings?.updatedAt || 0), Number(activeWorkshopSpecificSettings?.updatedAt || 0));
+        workshopShareImageFile = null;
+        workshopSharePreviewObjectUrl && URL.revokeObjectURL(workshopSharePreviewObjectUrl);
+        workshopSharePreviewObjectUrl = null;
+        const fileInput = document.getElementById("workshopShareImageFile"); if (fileInput) fileInput.value = "";
+        refreshShareCoverPreview();
+        await refreshWorkshopSharePreview();
+        if (status) status.textContent = global ? "Заједничка подешавања су сачувана на Cloudflare-у." : "Подешавања ове радионице су сачувана на Cloudflare-у.";
+      } catch (err) {
+        console.error("Грешка при чувању Facebook подешавања:", err);
+        if (status) status.textContent = err.message || "Подешавања нису сачувана.";
+        alert("Нисмо успели да сачувамо подешавања: " + (err.message || "непозната грешка"));
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = btn.dataset.originalText || (global ? "Сачувај као заједничко" : "Сачувај за ову радионицу"); }
       }
-      if (global) localStorage.setItem(WORKSHOP_SHARE_GLOBAL_KEY, JSON.stringify(settings));
-      else {
-        const all = readShareSettings(WORKSHOP_SHARE_SETTINGS_KEY, {});
-        all[String(activeWorkshopShareEvent.id)] = settings;
-        localStorage.setItem(WORKSHOP_SHARE_SETTINGS_KEY, JSON.stringify(all));
-      }
-      alert(global ? "Заједничка подешавања су сачувана у овом прегледачу." : "Подешавања за ову радионицу су сачувана у овом прегледачу.");
-      refreshWorkshopSharePreview();
     }
-    function applyGlobalWorkshopShareSettings() {
-      const settings = readShareSettings(WORKSHOP_SHARE_GLOBAL_KEY, null);
-      if (!settings) { alert("Заједничка подешавања још нису сачувана."); return; }
-      document.getElementById("workshopShareTitle").value = settings.title || "";
-      document.getElementById("workshopShareDescription").value = settings.description || "";
-      document.getElementById("workshopShareImageUrl").value = settings.imageUrl || "";
-      refreshWorkshopSharePreview();
+
+    async function applyGlobalWorkshopShareSettings() {
+      const status = document.getElementById("workshopShareSaveStatus");
+      try {
+        const settings = await fetchShareConfig("global");
+        if (!settings) { alert("Заједничка подешавања још нису сачувана."); return; }
+        activeEffectiveShareSettings = settings;
+        activeShareUseGlobalOnly = true;
+        document.getElementById("workshopShareTitle").value = settings.title || activeWorkshopShareEvent?.title || "";
+        document.getElementById("workshopShareDescription").value = settings.description || activeWorkshopShareEvent?.description || "";
+        workshopShareImageFile = null;
+        if (workshopSharePreviewObjectUrl) { URL.revokeObjectURL(workshopSharePreviewObjectUrl); workshopSharePreviewObjectUrl = null; }
+        const fileInput = document.getElementById("workshopShareImageFile"); if (fileInput) fileInput.value = "";
+        refreshShareCoverPreview();
+        await refreshWorkshopSharePreview();
+        if (status) status.textContent = "Учитао сам заједничку слику и текст. Сачувај за ову радионицу ако желиш да направиш посебну верзију.";
+      } catch (err) { alert("Заједничка подешавања нису доступна: " + (err.message || "грешка")); }
     }
+
     async function refreshWorkshopSharePreview() {
       if (!activeWorkshopShareEvent) return;
       const settings = currentWorkshopShareSettings();
-      const eventForPoster = { ...activeWorkshopShareEvent, title: settings.title || activeWorkshopShareEvent.title, description: settings.description || activeWorkshopShareEvent.description, photo: settings.imageUrl || activeWorkshopShareEvent.photo };
+      const eventForPoster = { ...activeWorkshopShareEvent, title: settings.title || activeWorkshopShareEvent.title, description: settings.description || activeWorkshopShareEvent.description, photo: activeWorkshopShareEvent.photo };
       try {
         const result = await createWorkshopShareImage(eventForPoster);
         workshopShareCanvas = result.canvas; workshopShareBlob = result.blob;
@@ -1800,7 +1902,7 @@
         if (preview) preview.src = URL.createObjectURL(workshopShareBlob);
         workshopShareUrl = workshopShareLink(activeWorkshopShareEvent.id, settings);
         workshopShareFileName = (String(eventForPoster.title || "radionica").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "radionica") + ".png";
-        workshopShareText = [eventForPoster.title, "", eventForPoster.description || "Практична радионица за учење, развој и нове идеје.", "", "📅 " + (fmtDate(eventForPoster.date) || "Термин у најави") + (eventForPoster.time ? " у " + eventForPoster.time.replace(/:(\d{2})$/, ".$1") : ""), "📍 " + (eventForPoster.location || "Локација ће бити накнадно објављена"), "💳 Цена: " + Number(eventForPoster.price || 0).toLocaleString("sr-RS") + " РСД по учеснику", "📞 Информације и пријаве: 064/418-8987", "Слободно нас позовите ако желите додатне информације о радионици и начину пријаве.", "🔗 Пријава на радионицу:", workshopShareUrl].join("\n");
+        workshopShareText = [eventForPoster.title, "", eventForPoster.description || "Практична радионица за учење, развој и нове идеје.", "", "📅 " + (fmtDate(eventForPoster.date) || "Термин у најави") + (eventForPoster.time ? " у " + eventForPoster.time.replace(/:(\d{2})$/, ".$1") : ""), "📍 " + (eventForPoster.location || "Локација ће бити накнадно објављена"), "💳 Цена: " + Number(eventForPoster.price || 0).toLocaleString("sr-RS") + " РСД по учеснику", "📞 Информације и пријаве: 064/418-8987", "Слободно нас позовите ако желите додатне информације о радионици и начину пријаве.", "🔗 Погледајте радионицу и пријавите се:", workshopShareUrl].join("\n");
       } catch (err) { console.error(err); }
     }
 
@@ -1810,19 +1912,28 @@
       ensureWorkshopShareModal();
       const modal = document.getElementById("workshopShareModal");
       activeWorkshopShareEvent = event;
+      activeShareUseGlobalOnly = false;
       modal.style.display = "flex";
-      const one = readShareSettings(WORKSHOP_SHARE_SETTINGS_KEY, {})[String(event.id)];
-      const global = readShareSettings(WORKSHOP_SHARE_GLOBAL_KEY, null);
-      const settings = one || global || {};
-      document.getElementById("workshopShareTitle").value = settings.title || event.title || "";
-      document.getElementById("workshopShareDescription").value = settings.description || event.description || "";
-      document.getElementById("workshopShareImageUrl").value = settings.imageUrl || "";
+      document.getElementById("workshopShareSaveStatus").textContent = "Учитавам заједничка и посебна подешавања…";
       try {
+        const [one, global] = await Promise.all([fetchShareConfig("workshop", event.id), fetchShareConfig("global")]);
+        activeWorkshopSpecificSettings = one;
+        activeGlobalShareSettings = global;
+        activeEffectiveShareSettings = { ...(global || {}), ...(one || {}) };
+        activeEffectiveShareSettings.imageKey = one?.imageKey || global?.imageKey || "";
+        activeEffectiveShareSettings.updatedAt = Math.max(Number(one?.updatedAt || 0), Number(global?.updatedAt || 0));
+        document.getElementById("workshopShareTitle").value = (one?.title || global?.title || event.title || "");
+        document.getElementById("workshopShareDescription").value = (one?.description || global?.description || event.description || "");
+        workshopShareImageFile = null;
+        if (workshopSharePreviewObjectUrl) { URL.revokeObjectURL(workshopSharePreviewObjectUrl); workshopSharePreviewObjectUrl = null; }
+        const fileInput = document.getElementById("workshopShareImageFile"); if (fileInput) fileInput.value = "";
+        refreshShareCoverPreview();
+        document.getElementById("workshopShareSaveStatus").textContent = one ? "Учитана су посебна подешавања за ову радионицу." : (global ? "Учитана су заједничка подешавања." : "Још нема посебне слике; користи се подразумевана насловна слика.");
         await refreshWorkshopSharePreview();
       } catch (err) {
         console.error(err);
-        alert("Нисмо успели да припремимо слику за ову радионицу. Провери да ли радионица има исправну фотографију и покушај поново.");
-        modal.style.display = "none";
+        document.getElementById("workshopShareSaveStatus").textContent = "Cloudflare Workers KV простор за слике још није подешено. Сачувајмо га након једнократног подешавања.";
+        alert("Подешавања слике још нису доступна. Прво треба повезати Cloudflare Workers KV складиште са пројектом. Ниједан податак о пријавама није промењен.");
       }
     }
     function openWorkshopFromLink() {
