@@ -1602,13 +1602,15 @@
     let workshopShareFileName = "radionica.png";
 
     function workshopShareLink(id, settings) {
-      // Link asks the Cloudflare Function for current Open Graph metadata.
+      // Keep the public share link short. The title, description and image are
+      // read server-side from Cloudflare KV, not embedded in the visible URL.
       const url = new URL(window.location.origin + "/share");
       url.searchParams.set("id", String(id));
-      if (settings?.title) url.searchParams.set("share_title", settings.title);
-      if (settings?.description) url.searchParams.set("share_description", settings.description);
       if (activeShareUseGlobalOnly) url.searchParams.set("use_global", "1");
-      url.searchParams.set("v", String(settings?.updatedAt || Date.now()));
+      // Version changes only when the saved settings change, helping Facebook
+      // refresh its cached preview without putting long text in the URL.
+      const version = Number(settings?.updatedAt || activeEffectiveShareSettings?.updatedAt || 1);
+      url.searchParams.set("v", String(version));
       return url.toString();
     }
 
@@ -1791,9 +1793,9 @@
         try {
           const global = await fetchShareConfig("global");
           const link = new URL(window.location.origin + "/share");
-          if (global?.title) link.searchParams.set("share_title", global.title);
-          if (global?.description) link.searchParams.set("share_description", global.description);
-          link.searchParams.set("v", String(global?.updatedAt || Date.now()));
+          // The global settings are loaded by /share from Cloudflare KV.
+          // Keep the URL short so the post contains no percent-encoded text.
+          link.searchParams.set("v", String(Number(global?.updatedAt || 1)));
           await navigator.clipboard.writeText(link.toString());
           alert("Заједнички линк је копиран. Клик на њега води на страницу са актуелним радионицама.");
         } catch (err) { alert("Не могу да прочитам заједничка подешавања. Прво их сачувај у Cloudflare-у."); }
