@@ -1606,10 +1606,8 @@
       // read server-side from Cloudflare KV, not embedded in the visible URL.
       const url = new URL(window.location.origin + "/share");
       url.searchParams.set("id", String(id));
-      if (activeShareUseGlobalOnly) url.searchParams.set("use_global", "1");
-      // Version changes only when the saved settings change, helping Facebook
-      // refresh its cached preview without putting long text in the URL.
-      const version = Date.now(); // Novi link pri svakom kopiranju da Facebook ponovo ucita metapodatke i sliku.
+      // Novi parametar verzije помаже Facebook-у да освежи кеширан преглед.
+      const version = Date.now();
       url.searchParams.set("v", String(version));
       return url.toString();
     }
