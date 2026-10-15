@@ -58,9 +58,7 @@ export async function onRequest({ request, env }) {
     1
   );
 
-  const imageUrl = imageKey
-    ? `${url.origin}/share-image?key=${encodeURIComponent(imageKey)}&v=${version}`
-    : `${url.origin}/og-cover.png?v=${version}`;
+  const imageUrl = `${url.origin}/og-cover.png?v=${version}`;
 
   const canonical = url.toString();
   const appUrl = id
