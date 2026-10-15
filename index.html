@@ -1568,7 +1568,7 @@
     function render() {
       renderPosts();
       const grid = $("eventGrid"), visible = events.filter(e => e.active && (filter === "Sve" || categoryGroup(e.category) === filter)).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
-      grid.innerHTML = visible.length ? visible.map(e => { const n = bookedCount(e.id), left = Math.max(0, e.capacity - n), pct = Math.min(100, Math.round(n / e.capacity * 100)); return `<article class="card"><div class="card-top"></div>${e.photo ? `<img class="event-photo" src="${e.photo}" alt="Fotografija: ${esc(e.title)}">` : ``}<div class="card-body"><div class="category">${esc(categoryGroup(e.category))}</div><h3>${esc(e.title)}</h3><div class="desc">${esc(e.description || "")}</div><div class="meta"><span>📅 ${fmtDate(e.date)} · ${esc(e.time)}</span><span>◷ ${e.duration} минута</span><span>📍 ${esc(e.location || "Локација ће бити накнадно објављена")}</span></div><div class="capacity"><span>${n}/${e.capacity} места попуњено</span><strong>${left} слободно</strong></div><div class="bar"><span style="width:${pct}%"></span></div><div class="card-foot"><div><div class="price">${Number(e.price).toLocaleString("sr-RS")} РСД</div><div class="small">по учеснику</div></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button ${left === 0 ? "disabled" : ""} onclick="openBooking('${e.id}')">${left === 0 ? "Попуњено" : "Пријави се онлајн"}</button><a href="tel:0644188987" class="btn" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none;white-space:nowrap">📞 Позови: 064/418-8987</a></div></div><button class="secondary" style="width:100%;margin-top:9px" onclick="openTopic('${e.id}')">Прочитајте о теми радионице →</button>${admin ? `<button class="secondary share-workshop-btn" style="width:100%;margin-top:8px" onclick="openWorkshopShare('${e.id}')">Подели радионицу</button>` : ``}<div class="small" style="margin-top:10px">За одржавање је потребно најмање ${e.minimum} пријава.</div>${admin ? `<div class="admin-actions"><button class="secondary" onclick="editEvent('${e.id}')">Измени</button><button class="danger" onclick="deleteEvent('${e.id}')">Обриши</button></div>` : ``}</div></article>` }).join("") : `<div class="empty">Trenutno nema radionica у ovoj kategoriji.</div>`;
+      grid.innerHTML = visible.length ? visible.map(e => { const n = bookedCount(e.id), left = Math.max(0, e.capacity - n), pct = Math.min(100, Math.round(n / e.capacity * 100)); return `<article class="card"><div class="card-top"></div>${e.photo ? `<img class="event-photo" src="${e.photo}" alt="Fotografija: ${esc(e.title)}">` : ``}<div class="card-body"><div class="category">${esc(categoryGroup(e.category))}</div><h3>${esc(e.title)}</h3><div class="desc">${esc(e.description || "")}</div><div class="meta"><span>📅 ${fmtDate(e.date)} · ${esc(e.time)}</span><span>◷ ${e.duration} минута</span><span>📍 ${esc(e.location || "Локација ће бити накнадно објављена")}</span></div><div class="capacity"><span>${n}/${e.capacity} места попуњено</span><strong>${left} слободно</strong></div><div class="bar"><span style="width:${pct}%"></span></div><div class="card-foot"><div><div class="price">${Number(e.price).toLocaleString("sr-RS")} РСД</div><div class="small">по учеснику</div></div><button ${left === 0 ? "disabled" : ""} onclick="openBooking('${e.id}')">${left === 0 ? "Попуњено" : "Пријави се"}</button></div><button class="secondary" style="width:100%;margin-top:9px" onclick="openTopic('${e.id}')">Прочитајте о теми радионице →</button>${admin ? `<button class="secondary share-workshop-btn" style="width:100%;margin-top:8px" onclick="openWorkshopShare('${e.id}')">Подели радионицу</button>` : ``}<div class="small" style="margin-top:10px">За одржавање је потребно најмање ${e.minimum} пријава.</div>${admin ? `<div class="admin-actions"><button class="secondary" onclick="editEvent('${e.id}')">Измени</button><button class="danger" onclick="deleteEvent('${e.id}')">Обриши</button></div>` : ``}</div></article>` }).join("") : `<div class="empty">Trenutno nema radionica у ovoj kategoriji.</div>`;
       $("addBtn").classList.toggle("hidden", !admin); $("adminPanel").classList.toggle("hidden", !admin); if (admin) renderAdmin();
     }
     function renderPosts() {
@@ -1601,33 +1601,12 @@
     let workshopShareUrl = "";
     let workshopShareFileName = "radionica.png";
 
-    function workshopShareLink(id, settings) {
-      // Keep the public share link short. The title, description and image are
-      // read server-side from Cloudflare KV, not embedded in the visible URL.
-      const url = new URL(window.location.origin + "/share");
-      url.searchParams.set("id", String(id));
-      // Novi parametar verzije помаже Facebook-у да освежи кеширан преглед.
-      const version = Date.now();
-      url.searchParams.set("v", String(version));
-      return url.toString();
+    function workshopShareLink(id) {
+      // Cloudflare Pages Function /share serves the workshop-specific OG preview
+      // and routes visitors to the selected workshop in the main application.
+      return window.location.origin + "/share?id=" + encodeURIComponent(id);
     }
 
-    async function fetchShareConfig(scope, id) {
-      const params = new URLSearchParams({ scope });
-      if (id) params.set("id", String(id));
-      const response = await fetch(`/api/share-settings?${params.toString()}`, { cache: "no-store" });
-      if (!response.ok) {
-        const body = await response.json().catch(() => ({}));
-        throw new Error(body.error || "Подешавања за Facebook нису доступна.");
-      }
-      const data = await response.json();
-      return data.config || null;
-    }
-
-    function shareImageUrl(imageKey, version) {
-      if (!imageKey) return "/og-cover.png";
-      return `/share-image?key=${encodeURIComponent(imageKey)}&v=${encodeURIComponent(version || Date.now())}`;
-    }
     function wrapCanvasText(ctx, text, maxWidth, maxLines) {
       const words = String(text || "").trim().split(/\s+/).filter(Boolean);
       const lines = [];
@@ -1659,7 +1638,7 @@
 
     async function createWorkshopShareImage(event) {
       const canvas = document.createElement("canvas");
-      canvas.width = 1200; canvas.height = 1500;
+      canvas.width = 1200; canvas.height = 1640;
       const ctx = canvas.getContext("2d");
       const bg = ctx.createLinearGradient(0, 0, 1200, 1500);
       bg.addColorStop(0, "#24584d"); bg.addColorStop(1, "#183f37");
@@ -1697,7 +1676,7 @@
       y = Math.max(1050, y + 15);
       descLines.forEach(line => { ctx.fillText(line, 70, y); y += 43; });
 
-      const detailY = 1240;
+      const detailY = 1210;
       ctx.fillStyle = "#ffffff"; ctx.font = "bold 29px Arial";
       ctx.fillText("ДАТУМ И ВРЕМЕ", 70, detailY);
       ctx.fillStyle = "#e3ece4"; ctx.font = "29px Arial";
@@ -1713,57 +1692,52 @@
       ctx.fillStyle = "#24584d"; ctx.font = "bold 46px Arial";
       ctx.fillText(Number(event.price || 0).toLocaleString("sr-RS") + " РСД", 830, 1367);
       ctx.font = "24px Arial"; ctx.fillText("по учеснику", 830, 1400);
-      // Јасан позив на акцију у свакој аутоматски генерисаној слици.
-      ctx.fillStyle = "#f4dfc8";
-      ctx.beginPath(); ctx.roundRect(70, 1428, 560, 48, 18); ctx.fill();
-      ctx.fillStyle = "#24584d"; ctx.font = "bold 25px Arial";
-      ctx.textAlign = "center";
-      ctx.fillText("ПРИЈАВИ СЕ НА РАДИОНИЦУ", 350, 1460);
-      ctx.textAlign = "left";
+
+      // Обавезни контакт мора да буде видљив и на самој слици постера.
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 31px Arial";
+      ctx.fillText("ИНФОРМАЦИЈЕ И ПРИЈАВЕ", 70, 1510);
+      ctx.fillStyle = "#f4dfc8"; ctx.font = "bold 43px Arial";
+      ctx.fillText("064/418-8987", 70, 1570);
+      ctx.fillStyle = "#e3ece4"; ctx.font = "24px Arial";
+      ctx.fillText("Позовите нас за додатне информације", 70, 1612);
 
       const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
       if (!blob) throw new Error("Слика није могла да се припреми.");
       return { canvas, blob };
     }
 
-    let activeWorkshopShareEvent = null;
-
     function ensureWorkshopShareModal() {
       if (document.getElementById("workshopShareModal")) return;
       const modal = document.createElement("div");
       modal.id = "workshopShareModal";
       modal.style.cssText = "position:fixed;inset:0;z-index:10050;background:rgba(12,30,26,.78);display:none;align-items:center;justify-content:center;padding:18px;overflow:auto";
-      modal.innerHTML = `<div style="background:#fffdf7;color:#243630;width:min(100%,650px);max-height:94vh;overflow:auto;border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px"><h2 id="workshopShareHeading" style="margin:0;font-size:22px">Подели радионицу</h2><button type="button" id="workshopShareClose" class="secondary" style="width:auto;margin:0;padding:8px 12px">Затвори ✕</button></div>
-        <p style="margin:0 0 14px;color:#687872">Преглед постера за ову радионицу. Изабери једну од две могућности.</p>
-        <img id="workshopSharePreview" alt="Преглед постера за радионицу" style="display:block;width:min(100%,420px);max-height:58vh;object-fit:contain;margin:0 auto 16px;border-radius:10px;background:#e3ece4">
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px">
-          <button type="button" id="workshopShareLinkButton" class="secondary">Подели линк</button>
+      modal.innerHTML = `<div style="background:#fffdf7;color:#243630;width:min(100%,760px);max-height:94vh;overflow:auto;border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px"><h2 style="margin:0;font-size:22px">Припремљена објава за радионицу</h2><button type="button" id="workshopShareClose" class="secondary" style="width:auto;margin:0;padding:8px 12px">Затвори ✕</button></div>
+        <p style="margin:0 0 14px;color:#687872">Проверите постер. Објава садржи цео текст, термин, локацију, цену, телефон и линк за пријаву.</p>
+        <img id="workshopSharePreview" alt="Преглед слике за објаву" style="display:block;width:min(100%,420px);max-height:48vh;object-fit:contain;margin:0 auto 16px;border-radius:10px;background:#e3ece4">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">
+          <button type="button" id="workshopShareCopy">Подели линк</button>
           <button type="button" id="workshopShareDownload" class="secondary">Преузми слику</button>
         </div>
-        <p id="workshopShareStatus" role="status" style="font-size:12px;color:#24584d;margin:12px 0 0"></p>
+        <p style="font-size:13px;color:#687872;line-height:1.5;margin:14px 0 0">„Подели линк“ копира припремљени текст са линком за пријаву. Налепите га у Facebook објаву. Да би се видели цео постер и телефон, приложите и преузету слику. Постер се прави у вашем прегледачу и не отпрема се у Supabase.</p>
       </div>`;
       document.body.appendChild(modal);
       modal.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
       document.getElementById("workshopShareClose").onclick = () => modal.style.display = "none";
-      document.getElementById("workshopShareLinkButton").onclick = async () => {
-        if (!workshopShareUrl) return;
-        try {
-          await navigator.clipboard.writeText(workshopShareUrl);
-          document.getElementById("workshopShareStatus").textContent = "Линк је копиран. Налепи га у Facebook објаву.";
-        } catch (e) {
-          prompt("Копирај линк ка радионици:", workshopShareUrl);
-        }
-      };
       document.getElementById("workshopShareDownload").onclick = () => {
         if (!workshopShareBlob) return;
-        const objectUrl = URL.createObjectURL(workshopShareBlob);
         const a = document.createElement("a");
-        a.href = objectUrl;
-        a.download = workshopShareFileName;
-        document.body.appendChild(a); a.click(); a.remove();
+        const objectUrl = URL.createObjectURL(workshopShareBlob);
+        a.href = objectUrl; a.download = workshopShareFileName; document.body.appendChild(a); a.click(); a.remove();
         setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
-        document.getElementById("workshopShareStatus").textContent = "Слика је преузета на уређај. Није отпремљена нити сачувана у Supabase-у.";
+      };
+      document.getElementById("workshopShareCopy").onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(workshopShareText);
+          alert("Цео текст објаве и линк за пријаву су копирани. Налепите их у Facebook објаву и приложите преузету слику.");
+        } catch (e) {
+          prompt("Копирајте цео текст објаве и линк за пријаву:", workshopShareText);
+        }
       };
     }
 
@@ -1771,29 +1745,24 @@
       const event = events.find(e => String(e.id) === String(id));
       if (!event) { alert("Није пронађена изабрана радионица."); return; }
       ensureWorkshopShareModal();
-      activeWorkshopShareEvent = event;
       const modal = document.getElementById("workshopShareModal");
       const preview = document.getElementById("workshopSharePreview");
-      const status = document.getElementById("workshopShareStatus");
-      const heading = document.getElementById("workshopShareHeading");
       modal.style.display = "flex";
-      heading.textContent = "Подели радионицу";
-      status.textContent = "Припремам преглед постера…";
       preview.removeAttribute("src");
-      workshopShareBlob = null;
+      preview.alt = "Припрема се слика…";
       try {
         const result = await createWorkshopShareImage(event);
         workshopShareCanvas = result.canvas;
         workshopShareBlob = result.blob;
         preview.src = URL.createObjectURL(workshopShareBlob);
-        preview.alt = "Преглед постера: " + event.title;
+        preview.alt = "Слика за објаву: " + event.title;
         workshopShareUrl = workshopShareLink(event.id);
         workshopShareFileName = (String(event.title || "radionica").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "radionica") + ".png";
-        status.textContent = "Преглед је спреман. Слика се чува само када изабереш „Преузми слику“; не шаље се у Supabase.";
+        workshopShareText = [event.title, "", event.description || "Практична радионица за учење, развој и нове идеје.", "", "📅 " + (fmtDate(event.date) || "Термин у најави") + (event.time ? " у " + event.time : ""), "📍 " + (event.location || "Локација ће бити накнадно објављена"), "💳 Цена: " + Number(event.price || 0).toLocaleString("sr-RS") + " РСД", "", "📞 Информације и пријаве: 064/418-8987", "Слободно нас позовите ако желите додатне информације о радионици и начину пријаве.", "", "🔗 Пријава на радионицу:", workshopShareUrl].join("\n");
       } catch (err) {
-        console.error("Неуспешно прављење постера:", err);
-        status.textContent = "Преглед слике није могао да се направи. Покушај поново.";
-        alert("Нисам успео да направим преглед постера: " + (err.message || "непозната грешка"));
+        console.error(err);
+        alert("Нисмо успели да припремимо слику за ову радионицу. Провери да ли радионица има исправну фотографију и покушај поново.");
+        modal.style.display = "none";
       }
     }
     function openWorkshopFromLink() {
