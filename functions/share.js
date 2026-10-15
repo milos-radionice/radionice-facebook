@@ -36,19 +36,8 @@ export async function onRequest({ request, env }) {
 
   const global = await readConfig(env.SHARE_ASSETS, "settings/global.json");
 
-  const title = (
-    url.searchParams.get("share_title") ||
-    specific?.title ||
-    global?.title ||
-    (id ? "Радионица — Отварамо прозоре" : "Отварамо прозоре — актуелне радионице")
-  ).slice(0, 180);
-
-  const description = (
-    url.searchParams.get("share_description") ||
-    specific?.description ||
-    global?.description ||
-    "Радионице за децу, родитеље и одрасле — упознајте програм и пријавите се."
-  ).slice(0, 500);
+const title = "Отвори простор за нешто ново";
+const description = "";
 
   const imageKey = specific?.imageKey || global?.imageKey || "";
   const version = Math.max(
