@@ -1609,7 +1609,7 @@
       if (activeShareUseGlobalOnly) url.searchParams.set("use_global", "1");
       // Version changes only when the saved settings change, helping Facebook
       // refresh its cached preview without putting long text in the URL.
-      const version = Number(settings?.updatedAt || activeEffectiveShareSettings?.updatedAt || 1);
+      const version = Date.now(); // Novi link pri svakom kopiranju da Facebook ponovo ucita metapodatke i sliku.
       url.searchParams.set("v", String(version));
       return url.toString();
     }
@@ -1795,7 +1795,7 @@
           const link = new URL(window.location.origin + "/share");
           // The global settings are loaded by /share from Cloudflare KV.
           // Keep the URL short so the post contains no percent-encoded text.
-          link.searchParams.set("v", String(Number(global?.updatedAt || 1)));
+          link.searchParams.set("v", String(Date.now())); // Jedinstven link izbegava stari Facebook kes slike.
           await navigator.clipboard.writeText(link.toString());
           alert("Заједнички линк је копиран. Клик на њега води на страницу са актуелним радионицама.");
         } catch (err) { alert("Не могу да прочитам заједничка подешавања. Прво их сачувај у Cloudflare-у."); }
