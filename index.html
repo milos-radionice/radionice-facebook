@@ -2123,10 +2123,12 @@ $("adminLoginForm").addEventListener("submit", async (e) => {
     $("pImage").addEventListener("change", () => { const f = $("pImage").files[0]; if (!f) { $("pImagePreview").classList.add("hidden"); return } if (f.size > 700 * 1024) { alert("Изаберите фотографију до 700 КБ."); $("pImage").value = ""; return } const r = new FileReader(); r.onload = () => { $("pImagePreview").src = r.result; $("pImagePreview").classList.remove("hidden") }; r.readAsDataURL(f) });
     $("eventForm").addEventListener("submit", async e => {
       e.preventDefault();
+      const selectedRaw = String($("eCategory").value || "").trim().toLocaleLowerCase("sr-RS");
       const selectedCategory = categoryGroup($("eCategory").value);
-      if (!["Закажите разговор са психологом", "О мени"].includes(selectedCategory) && (!$("eDate").value || !$("eTime").value)) { alert("Унесите датум и време радионице."); return; }
-      const capacity=Number($("eCapacity").value), minimum=Number($("eMinimum").value);
-      if(minimum>capacity) return alert("Минимум не може бити већи од укупног броја места.");
+      const isProfileOrConsultation = selectedCategory === "Закажите разговор са психологом" || selectedCategory === "О мени" || selectedRaw === "о мени" || selectedRaw === "закажите разговор са психологом";
+      if (!isProfileOrConsultation && (!$("eDate").value || !$("eTime").value)) { alert("Унесите датум и време радионице."); return; }
+      const capacity=Number($("eCapacity").value || 1), minimum=Number($("eMinimum").value || 1);
+      if(!isProfileOrConsultation && minimum>capacity) return alert("Минимум не може бити већи од укупног броја места.");
       try {
         await requireAdminSession();
         const id=$("eId").value, old=events.find(x=>x.id===id);
@@ -2142,7 +2144,7 @@ $("adminLoginForm").addEventListener("submit", async (e) => {
         $("eventForm").reset(); $("eId").value=""; $("eventModalTitle").textContent="Нова радионица"; $("ePhotoPreview").classList.add("hidden"); $("eventModal").classList.remove("open"); render();
       } catch(err) { alert("Радионица није сачувана у бази: "+(err.message||"проверите SQL и администраторска права")); }
     });
-    $("addBtn").addEventListener("click", () => { $("eventForm").reset(); $("eId").value = ""; $("eventModalTitle").textContent = "Нова радионица"; $("ePhotoPreview").classList.add("hidden"); $("eventModal").classList.add("open") });
+    $("addBtn").addEventListener("click", () => { $("eventForm").reset(); $("eId").value = ""; $("eventModalTitle").textContent = "Нова радионица"; $("ePhotoPreview").classList.add("hidden"); $("eventModal").classList.add("open"); configureEventFields() });
     $("eCategory").addEventListener("change", () => { const c=categoryGroup($("eCategory").value); if (!$("eId").value) $("eventModalTitle").textContent = c === "О мени" ? "О мени" : c === "Закажите разговор са психологом" ? "Закажите Ваш термин" : "Нова радионица"; configureEventFields(); });
     $("ePhoto").addEventListener("change", () => { const f = $("ePhoto").files[0]; if (!f) { $("ePhotoPreview").classList.add("hidden"); return } if (f.size > 700 * 1024) { alert("Изаберите фотографију до 700 КБ."); $("ePhoto").value = ""; return } const r = new FileReader(); r.onload = () => { $("ePhotoPreview").src = r.result; $("ePhotoPreview").classList.remove("hidden") }; r.readAsDataURL(f) });
     document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", () => $(b.dataset.close).classList.remove("open")));
