@@ -1803,30 +1803,60 @@
       y = Math.max(1050, y + 15);
       descLines.forEach(line => { ctx.fillText(line, 70, y); y += 43; });
 
-      const detailY = 1210;
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 29px Arial";
-      ctx.fillText(isIndividualConsultation(event.category) ? "ТЕРМИН ПО ДОГОВОРУ" : "ДАТУМ И ВРЕМЕ", 70, detailY);
-      ctx.fillStyle = "#e3ece4"; ctx.font = "29px Arial";
-      ctx.fillText((fmtDate(event.date) || "Термин у најави") + (event.time ? " · " + event.time : ""), 70, detailY + 42);
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 29px Arial";
-      ctx.fillText(isIndividualConsultation(event.category) ? "УЖИВО ИЛИ ОНЛАЈН" : "ЛОКАЦИЈА", 70, detailY + 105);
-      ctx.fillStyle = "#e3ece4"; ctx.font = "29px Arial";
-      const locLines = wrapCanvasText(ctx, event.location || "Локација ће бити накнадно објављена", 720, 2);
-      locLines.forEach((line, i) => ctx.fillText(line, 70, detailY + 147 + i * 36));
+      if (isIndividualConsultation(event.category)) {
+        // За разговор са психологом: без конкретног датума, времена и локације.
+        // Све информације су у једној колони да се текст не преклапа.
+        const infoY = Math.max(1210, y + 24);
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 28px Arial";
+        ctx.fillText("ТЕРМИН:", 70, infoY);
+        ctx.fillStyle = "#e3ece4"; ctx.font = "28px Arial";
+        ctx.fillText("По договору", 230, infoY);
 
-      ctx.fillStyle = "#f4dfc8";
-      ctx.beginPath(); ctx.roundRect(800, 1300, 330, 115, 24); ctx.fill();
-      ctx.fillStyle = "#24584d"; ctx.font = "bold 46px Arial";
-      ctx.fillText(Number(event.price || 0).toLocaleString("sr-RS") + " РСД", 830, 1367);
-      ctx.font = "24px Arial"; ctx.fillText(isIndividualConsultation(event.category) ? "по разговору" : "по учеснику", 830, 1400);
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 28px Arial";
+        ctx.fillText("НАЧИН ОДРЖАВАЊА:", 70, infoY + 44);
+        ctx.fillStyle = "#e3ece4"; ctx.font = "27px Arial";
+        const modeLines = wrapCanvasText(ctx, "Уживо или онлајн — према договору", 1060, 2);
+        modeLines.forEach((line, i) => ctx.fillText(line, 70, infoY + 82 + i * 34));
 
-      // Обавезни контакт мора да буде видљив и на самој слици постера.
-      ctx.fillStyle = "#ffffff"; ctx.font = "bold 31px Arial";
-      ctx.fillText("ИНФОРМАЦИЈЕ И ПРИЈАВЕ", 70, 1510);
-      ctx.fillStyle = "#f4dfc8"; ctx.font = "bold 43px Arial";
-      ctx.fillText("064/418-8987", 70, 1570);
-      ctx.fillStyle = "#e3ece4"; ctx.font = "24px Arial";
-      ctx.fillText("Позовите нас за додатне информације", 70, 1612);
+        const priceY = infoY + 82 + modeLines.length * 34 + 12;
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 28px Arial";
+        ctx.fillText("ЦЕНА:", 70, priceY);
+        ctx.fillStyle = "#e3ece4"; ctx.font = "28px Arial";
+        ctx.fillText(Number(event.price || 0).toLocaleString("sr-RS") + " РСД по разговору", 190, priceY);
+
+        const contactY = priceY + 48;
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 28px Arial";
+        ctx.fillText("ДИСКРЕТНО ЗАКАЗИВАЊЕ:", 70, contactY);
+        ctx.fillStyle = "#f4dfc8"; ctx.font = "bold 34px Arial";
+        ctx.fillText("064/418-8987", 70, contactY + 43);
+        ctx.fillStyle = "#e3ece4"; ctx.font = "23px Arial";
+        const callLines = wrapCanvasText(ctx, "Позовите нас да договоримо индивидуални или онлајн разговор са психологом.", 1060, 2);
+        callLines.forEach((line, i) => ctx.fillText(line, 70, contactY + 78 + i * 30));
+      } else {
+        const detailY = 1210;
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 29px Arial";
+        ctx.fillText("ДАТУМ И ВРЕМЕ", 70, detailY);
+        ctx.fillStyle = "#e3ece4"; ctx.font = "29px Arial";
+        ctx.fillText((fmtDate(event.date) || "Термин у најави") + (event.time ? " · " + event.time : ""), 70, detailY + 42);
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 29px Arial";
+        ctx.fillText("ЛОКАЦИЈА", 70, detailY + 105);
+        ctx.fillStyle = "#e3ece4"; ctx.font = "29px Arial";
+        const locLines = wrapCanvasText(ctx, event.location || "Локација ће бити накнадно објављена", 720, 2);
+        locLines.forEach((line, i) => ctx.fillText(line, 70, detailY + 147 + i * 36));
+
+        ctx.fillStyle = "#f4dfc8";
+        ctx.beginPath(); ctx.roundRect(800, 1300, 330, 115, 24); ctx.fill();
+        ctx.fillStyle = "#24584d"; ctx.font = "bold 46px Arial";
+        ctx.fillText(Number(event.price || 0).toLocaleString("sr-RS") + " РСД", 830, 1367);
+        ctx.font = "24px Arial"; ctx.fillText("по учеснику", 830, 1400);
+
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 31px Arial";
+        ctx.fillText("ИНФОРМАЦИЈЕ И ПРИЈАВЕ", 70, 1510);
+        ctx.fillStyle = "#f4dfc8"; ctx.font = "bold 43px Arial";
+        ctx.fillText("064/418-8987", 70, 1570);
+        ctx.fillStyle = "#e3ece4"; ctx.font = "24px Arial";
+        ctx.fillText("Позовите нас за додатне информације", 70, 1612);
+      }
 
       const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
       if (!blob) throw new Error("Слика није могла да се припреми.");
