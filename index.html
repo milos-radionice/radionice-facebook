@@ -1083,7 +1083,7 @@
     </div>
     <div class="filters" id="filters"><button class="active" data-filter="Sve">Све радионице</button><button
         data-filter="За децу и младе">За децу и младе</button><button data-filter="За родитеље">За родитеље</button><button
-        data-filter="За одрасле">За одрасле</button><button data-filter="Креативне радионице">Креативне радионице</button><button data-filter="Закажите разговор са психологом" style="background:#f3e7bd;border:1px solid #c8a84e;color:#493b17;font-weight:700">Закажите разговор са психологом</button></div>
+        data-filter="За одрасле">За одрасле</button><button data-filter="Креативне радионице">Креативне радионице</button><button data-filter="О мени">О мени</button><button data-filter="Закажите разговор са психологом" style="background:#f3e7bd;border:1px solid #c8a84e;color:#493b17;font-weight:700">Закажите разговор са психологом</button></div>
     <div id="eventGrid" class="grid"></div>
     <section id="adminPanel" class="panel hidden">
       <h2>Управљачки панел</h2>
@@ -1277,6 +1277,7 @@
               <option>За одрасле</option>
               <option>Креативне радионице</option>
               <option>Закажите разговор са психологом</option>
+              <option>О мени</option>
             </select></div>
           <div class="field"><label for="eDate">Датум</label><input id="eDate" type="date" required></div>
           <div class="field"><label for="eTime">Време</label><input id="eTime" type="time" required></div>
@@ -1450,10 +1451,11 @@
       if (["одрасли", "за одрасле", "одрасли/партнерски односи"].includes(c)) return "За одрасле";
       if (["креативно", "креативне радионице", "креативни кутак"].includes(c)) return "Креативне радионице";
       if (["упознајте човека иза пројекта", "индивидуални разговори", "индивидуални и онлајн разговори са психологом", "закажите разговор са психологом"].includes(c)) return "Закажите разговор са психологом";
+      if (["о мени", "о оснивачу", "упознајте ме"].includes(c)) return "О мени";
       return value || "Креативне радионице";
     }
     function contactPsychologist() { window.location.href = "tel:+381644188987"; }
-    function isIndividualConsultation(value) { return categoryGroup(value) === "Закажите разговор са психологом"; }
+    function isIndividualConsultation(value) { return ["Закажите разговор са психологом", "О мени"].includes(categoryGroup(value)); }
     function isChildOrFamilyCategory(value) {
       const c = categoryGroup(value);
       return c === "За децу и младе" || c === "За родитеље";
