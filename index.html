@@ -953,10 +953,6 @@
       }
     }
   
-    .founder-card .founder-subtitle{color:var(--green2);font-size:13px;font-weight:750;margin:0 0 10px}
-    .founder-card .desc{min-height:0;line-height:1.7}
-    #biographySection .bio-photo{display:block;max-width:280px;aspect-ratio:4/5}
-    @media(max-width:760px){#biographySection .bio-layout{grid-template-columns:1fr}#biographySection .bio-photo{max-width:240px;aspect-ratio:4/3}}
     /* Responsive gallery and biography additions */
     .space-section{max-width:1100px;margin:30px auto;padding:0 18px}
     .space-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;}
@@ -1102,13 +1098,8 @@
         <div class="field"><label for="sWelcomeText">Кратак уводни текст</label><textarea id="sWelcomeText" rows="2" maxlength="400" required></textarea></div>
         <div class="field"><label for="sFooter">Текст на дну сајта</label><input id="sFooter" maxlength="240" required></div>
         <div class="field"><label for="sPhone">Мобилни телефон за позив</label><input id="sPhone" type="tel" maxlength="30" placeholder="0644188987" required></div>
-        <div class="field full"><label for="sBiography">Биографија оснивача — налепите или унесите текст који ће бити приказан на сајту</label><textarea id="sBiography" rows="7" maxlength="6000" placeholder="Овде унесите своју биографију, образовање, искуство и области рада."></textarea></div>
-        <div class="field"><label for="sFounderShortDescription">Кратак опис за картицу оснивача</label><textarea id="sFounderShortDescription" rows="3" maxlength="700" placeholder="Кратко представљање и области рада."></textarea></div>
-        <div class="field"><label for="sFounderServiceTitle">Назив индивидуалне услуге</label><input id="sFounderServiceTitle" maxlength="160" placeholder="Индивидуални саветодавни разговор"></div>
-        <div class="field"><label for="sFounderPrice">Цена једног разговора (РСД)</label><input id="sFounderPrice" type="number" min="0" step="100" placeholder="3000"></div>
-        <div class="field"><label for="sFounderDuration">Трајање разговора (минута)</label><input id="sFounderDuration" type="number" min="15" max="240" step="15" placeholder="60"></div>
-        <div class="field"><label for="sFounderFormat">Начин одржавања</label><input id="sFounderFormat" maxlength="160" placeholder="Уживо или онлајн, уз претходни договор"></div>
-        <div class="field"><label for="sBiographyPhoto">Фотографија оснивача</label><input id="sBiographyPhoto" type="file" accept="image/jpeg,image/png,image/webp"><div class="upload-help">Фотографија остаје оригинална. Највише 700 KB. Можете је заменити кад год желите.</div><img id="sBiographyPhotoPreview" class="admin-image-preview" alt="Преглед фотографије биографије"><button type="button" class="secondary" id="removeBiographyPhotoBtn" style="margin-top:8px">Уклони фотографију</button></div>
+        <div class="field full"><label for="sBiography">Биографија — текст који ће бити приказан на сајту</label><textarea id="sBiography" rows="7" maxlength="6000" placeholder="Овде унесите своју биографију, образовање, искуство и области рада."></textarea></div>
+        <div class="field"><label for="sBiographyPhoto">Ваша оригинална фотографија</label><input id="sBiographyPhoto" type="file" accept="image/jpeg,image/png,image/webp"><div class="upload-help">Фотографија остаје оригинална. Највише 700 KB. Можете је заменити кад год желите.</div><img id="sBiographyPhotoPreview" class="admin-image-preview" alt="Преглед фотографије биографије"><button type="button" class="secondary" id="removeBiographyPhotoBtn" style="margin-top:8px">Уклони фотографију</button></div>
         <div class="field full"><label for="sSpacePhotos">Фотографије простора (до 3)</label><input id="sSpacePhotos" type="file" accept="image/jpeg,image/png,image/webp" multiple><div class="upload-help">Изаберите до 3 фотографије. Свака мора бити до 700 KB. У приказу ће све имати исти формат 4:3.</div><div id="sSpacePhotoPreviews" class="space-gallery"></div><button type="button" class="secondary" id="removeSpacePhotosBtn" style="margin-top:8px">Уклони фотографије простора</button></div>
         <div class="dialog-actions"><button type="submit" id="saveSiteSettingsBtn">Сачувај измене</button></div>
       </form>
@@ -1194,15 +1185,8 @@
     </div>
   </section>
   <section id="biographySection" class="wrap panel" style="margin-top:30px;margin-bottom:24px;display:none">
-    <div class="toolbar" style="align-items:center">
-      <div>
-        <div class="category">ОТВАРАМО ПРОЗОРЕ</div>
-        <h2 id="biographyHeading">Упознајте човека иза пројекта</h2>
-        <p class="small">Милош Миловановић · Психологија • Креативност • Лични развој</p>
-      </div>
-      <button type="button" class="secondary" id="shareBiographyBtn">Поделите моју причу</button>
-    </div>
-    <div class="bio-layout"><img id="publicBiographyPhoto" class="bio-photo" alt="Фотографија Милоша Миловановића"><div id="publicBiography" style="white-space:pre-line;line-height:1.8">Биографија ће ускоро бити доступна.</div></div>
+    <h2>О водитељу радионица</h2>
+    <div class="bio-layout"><img id="publicBiographyPhoto" class="bio-photo" alt="Фотографија водитеља радионица"><div id="publicBiography" style="white-space:pre-line;line-height:1.8">Биографија ће ускоро бити доступна.</div></div>
   </section>
   <footer>
     <div class="wrap" id="publicFooterText">За додатне информације о радионицама, позовите нас.</div>
@@ -1292,6 +1276,7 @@
               <option>За родитеље</option>
               <option>За одрасле</option>
               <option>Креативне радионице</option>
+              <option>Упознајте човека иза пројекта</option>
             </select></div>
           <div class="field"><label for="eDate">Датум</label><input id="eDate" type="date" required></div>
           <div class="field"><label for="eTime">Време</label><input id="eTime" type="time" required></div>
@@ -1464,6 +1449,7 @@
       if (["родитељи", "за родитеље"].includes(c)) return "За родитеље";
       if (["одрасли", "за одрасле", "одрасли/партнерски односи"].includes(c)) return "За одрасле";
       if (["креативно", "креативне радионице", "креативни кутак"].includes(c)) return "Креативне радионице";
+      if (["упознајте човека иза пројекта", "индивидуални разговори"].includes(c)) return "Упознајте човека иза пројекта";
       return value || "Креативне радионице";
     }
     function isChildOrFamilyCategory(value) {
@@ -1557,15 +1543,9 @@
       contact_phone: "0644188987",
       biography_text: "",
       biography_photo_data: "",
-      founder_short_description: "Дипломирани психолог, лиценцирани медијатор и оснивач пројекта „Отварамо прозоре“. Психологија, образовање, креативност и лични развој.",
-      founder_service_title: "Индивидуални саветодавни разговор",
-      founder_price_rsd: 0,
-      founder_duration_minutes: 60,
-      founder_format: "Уживо или онлајн, уз претходни договор",
       space_gallery_data: "[]"
     };
     let currentBiographyPhoto = "";
-    let currentFounderSettings = { founder_short_description: "", founder_service_title: "Индивидуални саветодавни разговор", founder_price_rsd: 0, founder_duration_minutes: 60, founder_format: "Уживо или онлајн, уз претходни договор" };
     let currentSpacePhotos = [];
     function readImageUnderLimit(file) {
       return new Promise((resolve, reject) => {
@@ -1608,7 +1588,6 @@
       $("publicPhoneLink").textContent = "Позовите нас: " + displayPhone;
       $("topPhoneLink").href = "tel:" + phone;
       $("topPhoneLink").textContent = "📞 Позовите нас: " + displayPhone;
-      currentFounderSettings = { founder_short_description: String(v.founder_short_description || ""), founder_service_title: String(v.founder_service_title || "Индивидуални саветодавни разговор"), founder_price_rsd: Number(v.founder_price_rsd || 0), founder_duration_minutes: Number(v.founder_duration_minutes || 60), founder_format: String(v.founder_format || "Уживо или онлајн, уз претходни договор") };
       const biography = String(v.biography_text || "").trim();
       $("publicBiography").textContent = biography;
       currentBiographyPhoto = String(v.biography_photo_data || "");
@@ -1621,11 +1600,6 @@
       const adminBioPreview = $("sBiographyPhotoPreview"); if (adminBioPreview) { adminBioPreview.src = currentBiographyPhoto || ""; adminBioPreview.style.display = currentBiographyPhoto ? "block" : "none"; }
       if ($("sPhone")) $("sPhone").value = v.contact_phone || "0644188987";
       if ($("sBiography")) $("sBiography").value = v.biography_text || "";
-      if ($("sFounderShortDescription")) $("sFounderShortDescription").value = v.founder_short_description || "";
-      if ($("sFounderServiceTitle")) $("sFounderServiceTitle").value = v.founder_service_title || "Индивидуални саветодавни разговор";
-      if ($("sFounderPrice")) $("sFounderPrice").value = Number(v.founder_price_rsd || 0) || "";
-      if ($("sFounderDuration")) $("sFounderDuration").value = Number(v.founder_duration_minutes || 60);
-      if ($("sFounderFormat")) $("sFounderFormat").value = v.founder_format || "Уживо или онлајн, уз претходни договор";
       ["sBrand","sTitle","sSubtitle","sWelcomeTitle","sWelcomeText","sFooter"].forEach((id, i) => {
         const values = [v.brand_text, v.hero_title, v.hero_text, v.welcome_title, v.welcome_text, v.footer_text];
         if ($(id)) $(id).value = values[i];
@@ -1667,11 +1641,6 @@
           contact_phone: $("sPhone").value.trim(),
           biography_text: $("sBiography").value.trim(),
           biography_photo_data: currentBiographyPhoto,
-          founder_short_description: $("sFounderShortDescription").value.trim(),
-          founder_service_title: $("sFounderServiceTitle").value.trim(),
-          founder_price_rsd: Number($("sFounderPrice").value || 0),
-          founder_duration_minutes: Number($("sFounderDuration").value || 60),
-          founder_format: $("sFounderFormat").value.trim(),
           space_gallery_data: JSON.stringify(currentSpacePhotos),
           updated_at: new Date().toISOString()
         };
@@ -1718,23 +1687,7 @@
 }
     function render() {
       renderPosts();
-      const grid = $("eventGrid");
-      if (filter === "Упознајте човека иза пројекта") {
-        const shortBio = currentFounderSettings.founder_short_description || "Дипломирани психолог, лиценцирани медијатор и оснивач пројекта „Отварамо прозоре“. Психологија, образовање, креативност и лични развој.";
-        const photo = currentBiographyPhoto ? `<img class="event-photo" src="${currentBiographyPhoto}" alt="Фотографија оснивача пројекта Отварамо прозоре">` : "";
-        const serviceTitle = currentFounderSettings.founder_service_title || "Индивидуални саветодавни разговор";
-        const servicePrice = Number(currentFounderSettings.founder_price_rsd || 0);
-        const serviceDuration = Number(currentFounderSettings.founder_duration_minutes || 60);
-        const serviceFormat = currentFounderSettings.founder_format || "Уживо или онлајн, уз претходни договор";
-        const phone = String($("sPhone")?.value || defaultSiteSettings.contact_phone || "0644188987").replace(/[^0-9+]/g, "");
-        const priceLine = servicePrice > 0 ? `<div class="price">${servicePrice.toLocaleString("sr-RS")} РСД</div><div class="small">по разговору · ${serviceDuration} минута</div>` : `<div class="small">Цена и термин по договору</div>`;
-        grid.innerHTML = `<article class="card founder-card"><div class="card-top"></div>${photo}<div class="card-body"><div class="category">УПОЗНАЈТЕ ОСНИВАЧА</div><h3>Упознајте човека иза пројекта</h3><p class="founder-subtitle">Психологија • Креативност • Лични развој</p><div class="desc">${esc(shortBio)}</div><div style="margin:14px 0;padding:13px;border-radius:12px;background:#f4f6ef"><strong>${esc(serviceTitle)}</strong><div class="small" style="margin:5px 0 9px">${esc(serviceFormat)}</div>${priceLine}<button style="width:100%;margin-top:10px" onclick="window.location.href='tel:${phone}'">Позовите ради договора</button></div><div class="card-foot"><span class="small">Оснивач пројекта „Отварамо прозоре“</span><button onclick="openFounderProfile()">Прочитајте моју причу</button></div></div></article>`;
-        $("addBtn").classList.add("hidden");
-        $("adminPanel").classList.toggle("hidden", !admin);
-        if (admin) renderAdmin();
-        return;
-      }
-      const visible = events.filter(e => e.active && (filter === "Sve" || categoryGroup(e.category) === filter)).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+      const grid = $("eventGrid"), visible = events.filter(e => e.active && (filter === "Sve" || categoryGroup(e.category) === filter)).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
       grid.innerHTML = visible.length ? visible.map(e => { const n = bookedCount(e.id), left = Math.max(0, e.capacity - n), pct = Math.min(100, Math.round(n / e.capacity * 100)); return `<article class="card"><div class="card-top"></div>${e.photo ? `<img class="event-photo" src="${e.photo}" alt="Fotografija: ${esc(e.title)}">` : ``}<div class="card-body"><div class="category">${esc(categoryGroup(e.category))}</div><h3>${esc(e.title)}</h3><div class="desc">${esc(e.description || "")}</div><div class="meta"><span>📅 ${fmtDate(e.date)} · ${esc(e.time)}</span><span>◷ ${e.duration} минута</span><span>📍 ${esc(e.location || "Локација ће бити накнадно објављена")}</span></div><div class="capacity"><span>${n}/${e.capacity} места попуњено</span><strong>${left} слободно</strong></div><div class="bar"><span style="width:${pct}%"></span></div><div class="card-foot"><div><div class="price">${Number(e.price).toLocaleString("sr-RS")} РСД</div><div class="small">по учеснику</div></div><button ${left === 0 ? "disabled" : ""} onclick="openBooking('${e.id}')">${left === 0 ? "Попуњено" : "Пријави се"}</button></div><button class="secondary" style="width:100%;margin-top:9px" onclick="openTopic('${e.id}')">Прочитајте о теми радионице →</button>${admin ? `<button class="secondary share-workshop-btn" style="width:100%;margin-top:8px" onclick="openWorkshopShare('${e.id}')">Подели радионицу</button>` : ``}<div class="small" style="margin-top:10px">За одржавање је потребно најмање ${e.minimum} пријава.</div>${admin ? `<div class="admin-actions"><button class="secondary" onclick="editEvent('${e.id}')">Измени</button><button class="danger" onclick="deleteEvent('${e.id}')">Обриши</button></div>` : ``}</div></article>` }).join("") : `<div class="empty">Trenutno nema radionica у ovoj kategoriji.</div>`;
       $("addBtn").classList.toggle("hidden", !admin); $("adminPanel").classList.toggle("hidden", !admin); if (admin) renderAdmin();
     }
@@ -2026,37 +1979,7 @@
         bookings = bookings.filter(b => b.id !== id); render();
       } catch (err) { alert("Пријава није обрисана: " + (err.message || "грешка")); }
     }
-    function openFounderProfile() {
-      const url = location.pathname + location.search + "#osnivac";
-      history.replaceState(null, "", url);
-      $("biographyHeading").textContent = "ОТВАРАМО ПРОЗОРЕ — Упознајте човека иза пројекта";
-      $("biographySection").style.display = "block";
-      $("biographySection").scrollIntoView({behavior:"smooth", block:"start"});
-    }
-    function syncFounderProfileRoute() {
-      if (location.hash === "#osnivac") {
-        $("biographyHeading").textContent = "ОТВАРАМО ПРОЗОРЕ — Упознајте човека иза пројекта";
-        $("biographySection").style.display = "block";
-      }
-    }
-    window.addEventListener("hashchange", syncFounderProfileRoute);
-    $("shareBiographyBtn").addEventListener("click", async () => {
-      const url = location.origin + location.pathname + location.search + "#osnivac";
-      const data = {title:"Упознајте човека иза пројекта", text:"Милош Миловановић — оснивач пројекта „Отварамо прозоре“.", url};
-      try {
-        if (navigator.share) await navigator.share(data);
-        else if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(url); alert("Линк ка биографији је копиран."); }
-        else prompt("Копирајте линк ка биографији:", url);
-      } catch (err) { if (err && err.name !== "AbortError") alert("Линк ка биографији: " + url); }
-    });
-    document.querySelectorAll("[data-filter]").forEach(b => b.addEventListener("click", () => {
-      filter = b.dataset.filter;
-      document.querySelectorAll("[data-filter]").forEach(x => x.classList.toggle("active", x === b));
-      if (filter !== "Упознајте човека иза пројекта" && location.hash === "#osnivac") history.replaceState(null, "", location.pathname + location.search);
-      if (filter === "Упознајте човека иза пројекта") $("biographySection").style.display = "none";
-      render();
-    }));
-    syncFounderProfileRoute();
+    document.querySelectorAll("[data-filter]").forEach(b => b.addEventListener("click", () => { filter = b.dataset.filter; document.querySelectorAll("[data-filter]").forEach(x => x.classList.toggle("active", x === b)); render() }));
 async function showAdminPanel() {
   const { data: { session } } = await supabaseClient.auth.getSession();
   if (!session) {
