@@ -1103,6 +1103,11 @@
         <div class="field"><label for="sFooter">Текст на дну сајта</label><input id="sFooter" maxlength="240" required></div>
         <div class="field"><label for="sPhone">Мобилни телефон за позив</label><input id="sPhone" type="tel" maxlength="30" placeholder="0644188987" required></div>
         <div class="field full"><label for="sBiography">Биографија оснивача — налепите или унесите текст који ће бити приказан на сајту</label><textarea id="sBiography" rows="7" maxlength="6000" placeholder="Овде унесите своју биографију, образовање, искуство и области рада."></textarea></div>
+        <div class="field"><label for="sFounderShortDescription">Кратак опис за картицу оснивача</label><textarea id="sFounderShortDescription" rows="3" maxlength="700" placeholder="Кратко представљање и области рада."></textarea></div>
+        <div class="field"><label for="sFounderServiceTitle">Назив индивидуалне услуге</label><input id="sFounderServiceTitle" maxlength="160" placeholder="Индивидуални саветодавни разговор"></div>
+        <div class="field"><label for="sFounderPrice">Цена једног разговора (РСД)</label><input id="sFounderPrice" type="number" min="0" step="100" placeholder="3000"></div>
+        <div class="field"><label for="sFounderDuration">Трајање разговора (минута)</label><input id="sFounderDuration" type="number" min="15" max="240" step="15" placeholder="60"></div>
+        <div class="field"><label for="sFounderFormat">Начин одржавања</label><input id="sFounderFormat" maxlength="160" placeholder="Уживо или онлајн, уз претходни договор"></div>
         <div class="field"><label for="sBiographyPhoto">Фотографија оснивача</label><input id="sBiographyPhoto" type="file" accept="image/jpeg,image/png,image/webp"><div class="upload-help">Фотографија остаје оригинална. Највише 700 KB. Можете је заменити кад год желите.</div><img id="sBiographyPhotoPreview" class="admin-image-preview" alt="Преглед фотографије биографије"><button type="button" class="secondary" id="removeBiographyPhotoBtn" style="margin-top:8px">Уклони фотографију</button></div>
         <div class="field full"><label for="sSpacePhotos">Фотографије простора (до 3)</label><input id="sSpacePhotos" type="file" accept="image/jpeg,image/png,image/webp" multiple><div class="upload-help">Изаберите до 3 фотографије. Свака мора бити до 700 KB. У приказу ће све имати исти формат 4:3.</div><div id="sSpacePhotoPreviews" class="space-gallery"></div><button type="button" class="secondary" id="removeSpacePhotosBtn" style="margin-top:8px">Уклони фотографије простора</button></div>
         <div class="dialog-actions"><button type="submit" id="saveSiteSettingsBtn">Сачувај измене</button></div>
@@ -1552,9 +1557,15 @@
       contact_phone: "0644188987",
       biography_text: "",
       biography_photo_data: "",
+      founder_short_description: "Дипломирани психолог, лиценцирани медијатор и оснивач пројекта „Отварамо прозоре“. Психологија, образовање, креативност и лични развој.",
+      founder_service_title: "Индивидуални саветодавни разговор",
+      founder_price_rsd: 0,
+      founder_duration_minutes: 60,
+      founder_format: "Уживо или онлајн, уз претходни договор",
       space_gallery_data: "[]"
     };
     let currentBiographyPhoto = "";
+    let currentFounderSettings = { founder_short_description: "", founder_service_title: "Индивидуални саветодавни разговор", founder_price_rsd: 0, founder_duration_minutes: 60, founder_format: "Уживо или онлајн, уз претходни договор" };
     let currentSpacePhotos = [];
     function readImageUnderLimit(file) {
       return new Promise((resolve, reject) => {
@@ -1597,6 +1608,7 @@
       $("publicPhoneLink").textContent = "Позовите нас: " + displayPhone;
       $("topPhoneLink").href = "tel:" + phone;
       $("topPhoneLink").textContent = "📞 Позовите нас: " + displayPhone;
+      currentFounderSettings = { founder_short_description: String(v.founder_short_description || ""), founder_service_title: String(v.founder_service_title || "Индивидуални саветодавни разговор"), founder_price_rsd: Number(v.founder_price_rsd || 0), founder_duration_minutes: Number(v.founder_duration_minutes || 60), founder_format: String(v.founder_format || "Уживо или онлајн, уз претходни договор") };
       const biography = String(v.biography_text || "").trim();
       $("publicBiography").textContent = biography;
       currentBiographyPhoto = String(v.biography_photo_data || "");
@@ -1609,6 +1621,11 @@
       const adminBioPreview = $("sBiographyPhotoPreview"); if (adminBioPreview) { adminBioPreview.src = currentBiographyPhoto || ""; adminBioPreview.style.display = currentBiographyPhoto ? "block" : "none"; }
       if ($("sPhone")) $("sPhone").value = v.contact_phone || "0644188987";
       if ($("sBiography")) $("sBiography").value = v.biography_text || "";
+      if ($("sFounderShortDescription")) $("sFounderShortDescription").value = v.founder_short_description || "";
+      if ($("sFounderServiceTitle")) $("sFounderServiceTitle").value = v.founder_service_title || "Индивидуални саветодавни разговор";
+      if ($("sFounderPrice")) $("sFounderPrice").value = Number(v.founder_price_rsd || 0) || "";
+      if ($("sFounderDuration")) $("sFounderDuration").value = Number(v.founder_duration_minutes || 60);
+      if ($("sFounderFormat")) $("sFounderFormat").value = v.founder_format || "Уживо или онлајн, уз претходни договор";
       ["sBrand","sTitle","sSubtitle","sWelcomeTitle","sWelcomeText","sFooter"].forEach((id, i) => {
         const values = [v.brand_text, v.hero_title, v.hero_text, v.welcome_title, v.welcome_text, v.footer_text];
         if ($(id)) $(id).value = values[i];
@@ -1650,6 +1667,11 @@
           contact_phone: $("sPhone").value.trim(),
           biography_text: $("sBiography").value.trim(),
           biography_photo_data: currentBiographyPhoto,
+          founder_short_description: $("sFounderShortDescription").value.trim(),
+          founder_service_title: $("sFounderServiceTitle").value.trim(),
+          founder_price_rsd: Number($("sFounderPrice").value || 0),
+          founder_duration_minutes: Number($("sFounderDuration").value || 60),
+          founder_format: $("sFounderFormat").value.trim(),
           space_gallery_data: JSON.stringify(currentSpacePhotos),
           updated_at: new Date().toISOString()
         };
@@ -1698,9 +1720,15 @@
       renderPosts();
       const grid = $("eventGrid");
       if (filter === "Упознајте човека иза пројекта") {
-        const shortBio = "Дипломирани психолог, директор школе, лиценцирани медијатор и оснивач пројекта „Отварамо прозоре“. Своје искуство из психологије, образовања, социјалне заштите и рада са људима повезује са креативним стваралаштвом, дизајном, CNC технологијама и развојем дигиталних решења.";
-        const photo = currentBiographyPhoto ? `<img class="event-photo" src="${currentBiographyPhoto}" alt="Милош Миловановић">` : "";
-        grid.innerHTML = `<article class="card founder-card"><div class="card-top"></div>${photo}<div class="card-body"><div class="category">УПОЗНАЈТЕ ОСНИВАЧА</div><h3>Упознајте Милоша Миловановића</h3><p class="founder-subtitle">Психологија • Креативност • Лични развој</p><div class="desc">${esc(shortBio)}</div><div class="card-foot"><span class="small">Оснивач пројекта „Отварамо прозоре“</span><button onclick="openFounderProfile()">Прочитајте моју причу</button></div></div></article>`;
+        const shortBio = currentFounderSettings.founder_short_description || "Дипломирани психолог, лиценцирани медијатор и оснивач пројекта „Отварамо прозоре“. Психологија, образовање, креативност и лични развој.";
+        const photo = currentBiographyPhoto ? `<img class="event-photo" src="${currentBiographyPhoto}" alt="Фотографија оснивача пројекта Отварамо прозоре">` : "";
+        const serviceTitle = currentFounderSettings.founder_service_title || "Индивидуални саветодавни разговор";
+        const servicePrice = Number(currentFounderSettings.founder_price_rsd || 0);
+        const serviceDuration = Number(currentFounderSettings.founder_duration_minutes || 60);
+        const serviceFormat = currentFounderSettings.founder_format || "Уживо или онлајн, уз претходни договор";
+        const phone = String($("sPhone")?.value || defaultSiteSettings.contact_phone || "0644188987").replace(/[^0-9+]/g, "");
+        const priceLine = servicePrice > 0 ? `<div class="price">${servicePrice.toLocaleString("sr-RS")} РСД</div><div class="small">по разговору · ${serviceDuration} минута</div>` : `<div class="small">Цена и термин по договору</div>`;
+        grid.innerHTML = `<article class="card founder-card"><div class="card-top"></div>${photo}<div class="card-body"><div class="category">УПОЗНАЈТЕ ОСНИВАЧА</div><h3>Упознајте човека иза пројекта</h3><p class="founder-subtitle">Психологија • Креативност • Лични развој</p><div class="desc">${esc(shortBio)}</div><div style="margin:14px 0;padding:13px;border-radius:12px;background:#f4f6ef"><strong>${esc(serviceTitle)}</strong><div class="small" style="margin:5px 0 9px">${esc(serviceFormat)}</div>${priceLine}<button style="width:100%;margin-top:10px" onclick="window.location.href='tel:${phone}'">Позовите ради договора</button></div><div class="card-foot"><span class="small">Оснивач пројекта „Отварамо прозоре“</span><button onclick="openFounderProfile()">Прочитајте моју причу</button></div></div></article>`;
         $("addBtn").classList.add("hidden");
         $("adminPanel").classList.toggle("hidden", !admin);
         if (admin) renderAdmin();
