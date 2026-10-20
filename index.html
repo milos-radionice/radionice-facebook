@@ -1083,7 +1083,7 @@
     </div>
     <div class="filters" id="filters"><button class="active" data-filter="Sve">Све радионице</button><button
         data-filter="За децу и младе">За децу и младе</button><button data-filter="За родитеље">За родитеље</button><button
-        data-filter="За одрасле">За одрасле</button><button data-filter="Креативне радионице">Креативне радионице</button><button data-filter="Индивидуални и онлајн разговори са психологом">Индивидуални и онлајн разговори са психологом</button></div>
+        data-filter="За одрасле">За одрасле</button><button data-filter="Креативне радионице">Креативне радионице</button><button data-filter="Закажите разговор са психологом" style="background:#f3e7bd;border:1px solid #c8a84e;color:#493b17;font-weight:700">Закажите разговор са психологом</button></div>
     <div id="eventGrid" class="grid"></div>
     <section id="adminPanel" class="panel hidden">
       <h2>Управљачки панел</h2>
@@ -1276,7 +1276,7 @@
               <option>За родитеље</option>
               <option>За одрасле</option>
               <option>Креативне радионице</option>
-              <option>Индивидуални и онлајн разговори са психологом</option>
+              <option>Закажите разговор са психологом</option>
             </select></div>
           <div class="field"><label for="eDate">Датум</label><input id="eDate" type="date" required></div>
           <div class="field"><label for="eTime">Време</label><input id="eTime" type="time" required></div>
@@ -1449,11 +1449,11 @@
       if (["родитељи", "за родитеље"].includes(c)) return "За родитеље";
       if (["одрасли", "за одрасле", "одрасли/партнерски односи"].includes(c)) return "За одрасле";
       if (["креативно", "креативне радионице", "креативни кутак"].includes(c)) return "Креативне радионице";
-      if (["упознајте човека иза пројекта", "индивидуални разговори", "упознајте човека иза пројекта"].includes(c)) return "Индивидуални и онлајн разговори са психологом";
+      if (["упознајте човека иза пројекта", "индивидуални разговори", "индивидуални и онлајн разговори са психологом", "закажите разговор са психологом"].includes(c)) return "Закажите разговор са психологом";
       return value || "Креативне радионице";
     }
     function contactPsychologist() { window.location.href = "tel:+381644188987"; }
-    function isIndividualConsultation(value) { return categoryGroup(value) === "Индивидуални и онлајн разговори са психологом"; }
+    function isIndividualConsultation(value) { return categoryGroup(value) === "Закажите разговор са психологом"; }
     function isChildOrFamilyCategory(value) {
       const c = categoryGroup(value);
       return c === "За децу и младе" || c === "За родитеље";
@@ -1960,7 +1960,7 @@
         info.textContent = "Статистика није могла да се учита.";
       }
     }
-    function editEvent(id) { const e = events.find(x => x.id === id); if (!e) return; $("eventForm").reset(); $("eId").value = e.id; $("eventModalTitle").textContent = "Измени radionicu"; $("eTitle").value = e.title; $("eCategory").value = categoryGroup(e.category); $("eDate").value = e.date; $("eTime").value = e.time; $("eLocation").value = e.location || ""; $("eDuration").value = e.duration; $("ePrice").value = e.price; $("eCapacity").value = e.capacity; $("eMinimum").value = e.minimum; $("eDescription").value = e.description || ""; $("eTopicTitle").value = e.topicTitle || ""; $("eTopicContent").value = e.topicContent || ""; $("ePhoto").value = ""; $("eRemovePhoto").checked = false; if (e.photo) { $("ePhotoPreview").src = e.photo; $("ePhotoPreview").classList.remove("hidden") } else { $("ePhotoPreview").classList.add("hidden") } $("eventModal").classList.add("open") }
+    function editEvent(id) { const e = events.find(x => x.id === id); if (!e) return; $("eventForm").reset(); $("eId").value = e.id; $("eventModalTitle").textContent = isIndividualConsultation(e.category) ? "Закажите Ваш термин" : "Измени radionicu"; $("eTitle").value = e.title; $("eCategory").value = categoryGroup(e.category); $("eDate").value = e.date; $("eTime").value = e.time; $("eLocation").value = e.location || ""; $("eDuration").value = e.duration; $("ePrice").value = e.price; $("eCapacity").value = e.capacity; $("eMinimum").value = e.minimum; $("eDescription").value = e.description || ""; $("eTopicTitle").value = e.topicTitle || ""; $("eTopicContent").value = e.topicContent || ""; $("ePhoto").value = ""; $("eRemovePhoto").checked = false; if (e.photo) { $("ePhotoPreview").src = e.photo; $("ePhotoPreview").classList.remove("hidden") } else { $("ePhotoPreview").classList.add("hidden") } $("eventModal").classList.add("open") }
     async function deleteEvent(id) { const e = events.find(x => x.id === id); if (!e) return; if (bookings.some(b => b.eventId === id)) { alert("Ова радионица има пријаве. Да бисмо сачували евиденцију, немојте је брисати; измените термин."); return } if (!confirm("Обриши радионицу „" + e.title + "“ из базе?")) return; try { await requireAdminSession(); const {error}=await supabaseClient.from("workshops").delete().eq("id",id); if(error) throw error; events=events.filter(x=>x.id!==id); render(); } catch(err){ alert("Радионица није обрисана: "+(err.message||"грешка")); } }
     function readPhoto(file) { return new Promise((resolve, reject) => { if (!file) { resolve(null); return } if (file.size > 700 * 1024) { reject(new Error("Фотографија је већа од 700 КБ. Изаберите мању фотографију или је смањите.")); return } const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = () => reject(new Error("Фотографија није могла да се учита.")); r.readAsDataURL(file) }) }
     function openBooking(id) { const e = events.find(e => String(e.id) === String(id)); if (!e) return; if (isIndividualConsultation(e.category)) { contactPsychologist(); return; } if (bookedCount(id) >= e.capacity) return alert("Сва места су попуњена."); trackContentOpenOnce("workshop_open", id); $("bookingForm").reset(); $("bookingEventId").value = id; $("bookingEventName").textContent = e.title + " · " + fmtDate(e.date) + " у " + e.time + " · " + e.price.toLocaleString("sr-RS") + " РСД"; updateBookingFields(); $("bookingModal").classList.add("open") }
@@ -2117,6 +2117,7 @@ $("adminLoginForm").addEventListener("submit", async (e) => {
       } catch(err) { alert("Радионица није сачувана у бази: "+(err.message||"проверите SQL и администраторска права")); }
     });
     $("addBtn").addEventListener("click", () => { $("eventForm").reset(); $("eId").value = ""; $("eventModalTitle").textContent = "Нова радионица"; $("ePhotoPreview").classList.add("hidden"); $("eventModal").classList.add("open") });
+    $("eCategory").addEventListener("change", () => { if (!$("eId").value) $("eventModalTitle").textContent = isIndividualConsultation($("eCategory").value) ? "Закажите Ваш термин" : "Нова радионица"; });
     $("ePhoto").addEventListener("change", () => { const f = $("ePhoto").files[0]; if (!f) { $("ePhotoPreview").classList.add("hidden"); return } if (f.size > 700 * 1024) { alert("Изаберите фотографију до 700 КБ."); $("ePhoto").value = ""; return } const r = new FileReader(); r.onload = () => { $("ePhotoPreview").src = r.result; $("ePhotoPreview").classList.remove("hidden") }; r.readAsDataURL(f) });
     document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", () => $(b.dataset.close).classList.remove("open")));
     ["bookingModal", "eventModal", "postModal", "topicModal", "adminLoginModal"].forEach(id => $(id).addEventListener("click", e => { if (e.target === $(id)) $(id).classList.remove("open") }));
