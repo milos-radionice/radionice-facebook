@@ -1917,12 +1917,24 @@
         : categoryGroup(e.category) === "Креативне радионице"
           ? "Креативноst počinje posmatranjem, pitanjima i hrabrošću da isprobamo nešto novo. Na radionici ćemo ideje pretvoriti у praktične vežbe."
           : "Kroz igru, razgovor i stvaralaštvo upoznaćemo temu korak po korak. Svako dete može da učestvuje na svoj način i da istražuje sopstvene ideje.";
-      $("topicCategory").textContent = e.category;
+      $("topicCategory").textContent = categoryGroup(e.category) === "О мени" ? "Упознајте психолога — водитеља радионица" : categoryGroup(e.category) === "Закажите разговор са психологом" ? "Закажите разговор са психологом" : e.category;
       $("topicTitle").textContent = e.topicTitle || e.title;
       $("topicContent").textContent = e.topicContent || defaultContent;
       if (e.photo) { $("topicPhoto").src = e.photo; $("topicPhoto").classList.remove("hidden"); }
       else { $("topicPhoto").classList.add("hidden"); }
-      $("topicFacts").innerHTML = "<strong>" + (isIndividualConsultation(e.category) ? "О услузи:" : "Шта ћемо радити?") + "</strong><br>" + esc(e.description || (isIndividualConsultation(e.category) ? "Индивидуални или онлајн разговор са психологом." : "Upoznaćemo temu kroz razgovor i praktične aktivnosti.")) + (isIndividualConsultation(e.category) ? "<br><strong>Термин:</strong> По договору<br><strong>Начин одржавања:</strong> Уживо или онлајн — према договору" : "<br><strong>Термин:</strong> " + fmtDate(e.date) + " у " + esc(e.time) + " · " + e.duration + " минута<br><strong>Локација:</strong> " + esc(e.location || "Локација ће бити накнадно објављена")) + "<br><strong>Цена:</strong> " + Number(e.price).toLocaleString("sr-RS") + (isIndividualConsultation(e.category) ? " РСД по разговору" : " РСД") + (isIndividualConsultation(e.category) ? "<br><strong>Дискретно заказивање:</strong> 064/418-8987<br>Позовите нас да договоримо индивидуални или онлајн разговор са психологом." : "");
+      if (categoryGroup(e.category) === "О мени") {
+        $("topicFacts").innerHTML = "";
+        $("topicFacts").classList.add("hidden");
+        $("topicBookBtn").classList.remove("hidden");
+        $("topicBookBtn").textContent = "Контактирај психолога";
+        $("topicBookBtn").onclick = contactPsychologist;
+      } else {
+        $("topicFacts").classList.remove("hidden");
+        $("topicBookBtn").classList.remove("hidden");
+        $("topicBookBtn").textContent = isIndividualConsultation(e.category) ? "Контактирај психолога" : "Пријави се";
+        $("topicBookBtn").onclick = isIndividualConsultation(e.category) ? contactPsychologist : () => openBooking(e.id);
+        $("topicFacts").innerHTML = "<strong>" + (isIndividualConsultation(e.category) ? "О разговору:" : "Шта ћемо радити?") + "</strong><br>" + esc(e.description || (isIndividualConsultation(e.category) ? "Индивидуални или онлајн разговор са психологом." : "Упознаћемо тему кроз разговор и практичне активности.")) + (isIndividualConsultation(e.category) ? "<br><strong>Термин:</strong> По договору<br><strong>Начин одржавања:</strong> Уживо или онлајн — према договору" : "<br><strong>Термин:</strong> " + fmtDate(e.date) + " у " + esc(e.time) + " · " + e.duration + " минута<br><strong>Локација:</strong> " + esc(e.location || "Локација ће бити накнадно објављена")) + "<br><strong>Цена:</strong> " + Number(e.price).toLocaleString("sr-RS") + (isIndividualConsultation(e.category) ? " РСД по разговору" : " РСД") + (isIndividualConsultation(e.category) ? "<br><strong>Дискретно заказивање:</strong> 064/418-8987<br>Позовите нас да договоримо индивидуални или онлајн разговор са психологом." : "");
+      }
       $("topicBookBtn").disabled = bookedCount(id) >= e.capacity;
       $("topicBookBtn").textContent = isIndividualConsultation(e.category) ? "Контактирај психолога" : bookedCount(id) >= e.capacity ? "Попуњено" : "Пријави се на радионицу";
       $("topicBookBtn").onclick = () => { $("topicModal").classList.remove("open"); if (isIndividualConsultation(e.category)) contactPsychologist(); else openBooking(id); };
